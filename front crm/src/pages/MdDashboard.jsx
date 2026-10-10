@@ -3,7 +3,6 @@ import { useToast } from '../components/ToastProvider';
 import HrDashboard from './HrDashboard';
 import Attendance from './Attendance';
 import AccountantDashboard from './AccountantDashboard';
-import EnrollmentTracking from './EnrollmentTracking';
 import MarketingDashboard from './Marketing Dashboard';
 import CounselorDashboard from './CounselorDashboard';
 import DeveloperDashboard from './DeveloperDashboard';
@@ -22,7 +21,6 @@ const DEPARTMENT_TABS = [
   { id: 'hr', label: 'HR View', icon: Users, color: 'text-rose-600' },
   { id: 'attendance', label: 'Attendance Logs', icon: Clock, color: 'text-rose-600' },
   { id: 'accountant', label: 'Finance & Accounts', icon: Calculator, color: 'text-emerald-600' },
-  { id: 'academy', label: 'Academy & LMS', icon: BookOpen, color: 'text-indigo-600' },
   { id: 'marketing', label: 'Digital Marketing', icon: Megaphone, color: 'text-purple-600' },
   { id: 'counselor', label: 'Academic Counselor', icon: GraduationCap, color: 'text-blue-600' },
   { id: 'developer', label: 'Development & Tech', icon: Code2, color: 'text-cyan-600' },
@@ -38,7 +36,6 @@ const ExecutivePieChart = ({ data }) => {
     { label: 'Corporate Clients', value: data?.activeClientsCount || 0, color: '#6366f1' },
     { label: 'Active Projects', value: data?.activeProjectsCount || 0, color: '#a855f7' },
     { label: 'Workforce Staff', value: data?.activeEmployeesCount || 0, color: '#f43f5e' },
-    { label: 'Academy Students', value: data?.activeStudentsCount || 0, color: '#3b82f6' },
     { label: 'Completed Tasks', value: data?.completedTasksCount || 0, color: '#10b981' }
   ];
 
@@ -215,22 +212,6 @@ const OverallStatCards = ({ data }) => {
           )}
         </div>
 
-        {/* 4. Students */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-2">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Students</span>
-            <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
-              <GraduationCap className="w-5 h-5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-slate-900 dark:text-slate-100">{data?.activeStudentsCount ?? '--'}</span>
-          {data?.newStudentsThisMonthCount > 0 ? (
-            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+{data.newStudentsThisMonthCount} new this month</span>
-          ) : (
-            <span className="text-xs font-medium text-slate-400">Enrolled academy students</span>
-          )}
-        </div>
-
         {/* 5. Total Tasks */}
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-2">
           <div className="flex items-center justify-between text-slate-400">
@@ -359,7 +340,7 @@ const MdDashboard = () => {
           </div>
           <div>
             <h1 className="text-base md:text-lg font-black text-slate-800 dark:text-slate-100">
-              Managing Director Dashboard
+              Dashboard
             </h1>
             <span className="text-xs text-slate-400 font-medium">Consolidated Operations & Departmental Telemetry</span>
           </div>
@@ -406,7 +387,6 @@ const MdDashboard = () => {
         {activeTab === 'hr' && <HrDashboard />}
         {activeTab === 'attendance' && <Attendance />}
         {activeTab === 'accountant' && <AccountantDashboard />}
-        {activeTab === 'academy' && <EnrollmentTracking />}
         {activeTab === 'marketing' && <MarketingDashboard />}
         {activeTab === 'counselor' && <CounselorDashboard />}
         {activeTab === 'developer' && <DeveloperDashboard />}

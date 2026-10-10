@@ -1,7 +1,7 @@
 {
   "name": "kod-brand-backend",
   "version": "1.0.0",
-  "description": "KOD.BRAND Command Center CRM Standalone Backend",
+  "description": "DIGI 360 Command Center CRM Standalone Backend",
   "main": "server.js",
   "type": "module",
   "scripts": {

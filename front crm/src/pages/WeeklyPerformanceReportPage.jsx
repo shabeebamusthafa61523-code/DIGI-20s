@@ -294,7 +294,7 @@ export default function WeeklyPerformanceReportPage() {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
         doc.setTextColor(30, 41, 59);
-        doc.text("KOD.BRAND", 14, 20);
+        doc.text("DIGI 360", 14, 20);
         resolve();
       };
     });
@@ -619,7 +619,7 @@ export default function WeeklyPerformanceReportPage() {
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(100, 100, 100);
-      doc.text(`KOD.BRAND Digital Marketing Solutions Pvt Ltd | Official CRM Report`, 14, 287);
+      doc.text(`DIGI 360 Digital Marketing Solutions Pvt Ltd | Official CRM Report`, 14, 287);
       doc.setFont('helvetica', 'normal');
       doc.text(`Page ${i} of ${totalPages}`, 196, 287, { align: 'right' });
     }
@@ -816,7 +816,7 @@ export default function WeeklyPerformanceReportPage() {
         {/* LOGO & TITLE HEADER */}
         <div className="flex flex-col sm:flex-row items-center justify-between border-b-2 border-slate-900 dark:border-slate-700 pb-5 gap-4">
           <div className="flex items-center gap-3">
-            <img src="/logo3.png" alt="KOD.BRAND Logo" className="h-12 sm:h-14 w-auto object-contain" />
+            <img src="/logo3.png" alt="DIGI 360 Logo" className="h-16 sm:h-18 w-auto object-contain" />
           </div>
 
           <div className="text-right sm:text-right text-center">
@@ -1783,7 +1783,7 @@ export default function WeeklyPerformanceReportPage() {
         </div>
 
         <div className="mt-4 text-center text-xs text-slate-400 font-medium">
-          KOD.BRAND Internal Operating System • Weekly Performance Report Management
+          DIGI 360 Internal Operating System • Weekly Performance Report Management
         </div>
       </div>
     </div>

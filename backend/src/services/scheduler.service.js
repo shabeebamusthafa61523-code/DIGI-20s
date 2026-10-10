@@ -28,7 +28,7 @@ export const schedulerService = {
         
         await notificationService.sendBulk(staffIds, ['IN_APP', 'WHATSAPP'], {
           title: '☀️ Daily Shift Commenced',
-          body: 'Good morning! Please remember to check-in on the KOD.BRAND CRM portal and log your goals for today.',
+          body: 'Good morning! Please remember to check-in on the DIGI 360 CRM portal and log your goals for today.',
           type: 'SYSTEM'
         });
       } catch (err) {

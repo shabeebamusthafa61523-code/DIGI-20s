@@ -1050,7 +1050,7 @@ const HrReportPage = () => {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
       doc.setTextColor(120, 120, 120);
-      doc.text(`Page ${i} of ${totalPages}  |  KOD.brand Operations Command Center © ${new Date().getFullYear()}`, 105, 287, { align: 'center' });
+      doc.text(`Page ${i} of ${totalPages}  |  DIGI 360 Operations Command Center © ${new Date().getFullYear()}`, 105, 287, { align: 'center' });
     }
 
     if (autoDownload) {

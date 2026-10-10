@@ -39,7 +39,7 @@ const salaryPaymentSchema = new mongoose.Schema({
     default: ''
   },
 
-  // Detailed Payslip Header & Attendance Fields (from KOD.BRAND official format)
+  // Detailed Payslip Header & Attendance Fields (from DIGI 360 official format)
   kbEmployeeId: {
     type: String,
     default: ''
@@ -78,7 +78,7 @@ const salaryPaymentSchema = new mongoose.Schema({
   },
   companyName: {
     type: String,
-    default: 'KODBRAND SOLUTIONS'
+    default: 'DIGI 360 SOLUTIONS'
   },
   companyAddressLine1: {
     type: String,

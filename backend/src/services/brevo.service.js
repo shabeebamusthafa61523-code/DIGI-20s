@@ -52,8 +52,8 @@ export const sendBrevoEmail = async ({
     return { success: false, message: 'No valid recipient emails provided.' };
   }
 
-  const defaultSenderEmail = senderEmail || process.env.BREVO_SENDER_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@kodbrand.com';
-  const defaultSenderName = senderName || process.env.BREVO_SENDER_NAME || 'KOD.BRAND CRM';
+  const defaultSenderEmail = senderEmail || process.env.BREVO_SENDER_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@digi360.com';
+  const defaultSenderName = senderName || process.env.BREVO_SENDER_NAME || 'DIGI 360 CRM';
 
   // If no Brevo API key is provided, log warning & return null to let caller fallback
   if (!apiKey) {
@@ -68,7 +68,7 @@ export const sendBrevoEmail = async ({
         email: defaultSenderEmail
       },
       to: recipients,
-      subject: subject || 'KOD.BRAND CRM Notification',
+      subject: subject || 'DIGI 360 CRM Notification',
       htmlContent: htmlContent || textContent || '<p>No content</p>'
     };
 
@@ -158,7 +158,7 @@ export const sendBrevoTemplateEmail = async ({ to, templateId, params = {} }) =>
  * @param {Object} options
  * @param {string} options.recipientMobile - Mobile number formatted with country code (e.g., "+919876543210" or "919876543210")
  * @param {string} options.message - SMS message text (max 160 chars per SMS segment)
- * @param {string} [options.sender] - Sender ID (max 11 alphanumeric chars e.g. "KODBRAND")
+ * @param {string} [options.sender] - Sender ID (max 11 alphanumeric chars e.g. "DIGI 360")
  * @param {string} [options.tag] - Tag for tracking
  */
 export const sendBrevoSms = async ({ recipientMobile, message, sender = null, tag = 'crm_notification' }) => {
@@ -175,7 +175,7 @@ export const sendBrevoSms = async ({ recipientMobile, message, sender = null, ta
     cleanMobile = `+91${cleanMobile}`;
   }
 
-  const senderName = sender || process.env.BREVO_SMS_SENDER || 'KODBRAND';
+  const senderName = sender || process.env.BREVO_SMS_SENDER || 'DIGI 360';
 
   if (!apiKey) {
     console.log(`\n================== 📱 SIMULATED SMS DELIVERY 💾 ==================`);

@@ -75,8 +75,8 @@ export const sendEmail = async ({
     recipients = to.map(e => (typeof e === 'string' ? { email: e.trim() } : e));
   }
 
-  const defaultSenderEmail = senderEmail || process.env.BREVO_SENDER_EMAIL || process.env.VITE_EMAIL_SENDER_ADDRESS || process.env.SMTP_FROM || 'kodbrandsolutions@gmail.com';
-  const defaultSenderName = senderName || process.env.BREVO_SENDER_NAME || process.env.VITE_EMAIL_SENDER_NAME || 'KODBRAND';
+  const defaultSenderEmail = senderEmail || process.env.BREVO_SENDER_EMAIL || process.env.VITE_EMAIL_SENDER_ADDRESS || process.env.SMTP_FROM || 'digi360solutions@gmail.com';
+  const defaultSenderName = senderName || process.env.BREVO_SENDER_NAME || process.env.VITE_EMAIL_SENDER_NAME || 'DIGI 360';
 
   // 1. Try Brevo API v3
   const apiKey = (apiKeyOverride && String(apiKeyOverride).trim()) || getBrevoApiKey();
@@ -85,7 +85,7 @@ export const sendEmail = async ({
       const payload = {
         sender: { name: defaultSenderName, email: defaultSenderEmail },
         to: recipients,
-        subject: subject || 'KOD.BRAND Notification',
+        subject: subject || 'DIGI 360 Notification',
         htmlContent: htmlContent || textContent || '<p>No content</p>'
       };
 

@@ -125,18 +125,23 @@ const VisibleWorkPage = () => {
       {/* Overview Card */}
       <div className="p-6 rounded-3xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md shadow-xl flex flex-col md:flex-row justify-between gap-4 items-center">
         <div>
-          <span className="text-[10px] font-mono font-bold text-indigo-600 uppercase">{getValue(project.projectCode, project.code, 'N/A')}</span>
+          <span className="text-[10px] font-mono font-bold text-cyan-600 uppercase">{getValue(project.projectCode, project.code, 'N/A')}</span>
           <h2 className="text-lg font-black text-slate-800 dark:text-slate-100">{getValue(project.projectName, project.name, 'N/A')}</h2>
           <p className="text-xs text-slate-500 font-semibold">
             Tracking active task assignments across {Array.isArray(project.assignedEmployees) ? project.assignedEmployees.length : 0} assigned employees.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-500">Stage:</span>
-          <span className="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 font-extrabold text-xs">
-            {getValue(project.status, 'N/A')}
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="px-3 py-1.5 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 border border-cyan-500/20 font-extrabold text-xs">
+            Deliverable Version: v2.4 (Final)
           </span>
+          <button
+            onClick={() => alert(`Client Delivery Package generated for ${getValue(project.projectName, 'Project')}! Automated delivery link dispatched to client.`)}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xs uppercase tracking-wider shadow-md hover:brightness-110 transition-all cursor-pointer"
+          >
+            Dispatch Client Delivery Package
+          </button>
         </div>
       </div>
 

@@ -64,6 +64,7 @@ import {
   UsersRound,
   UserCog,
   BookCheck,
+  Share2,
   X
 } from 'lucide-react';
 
@@ -74,7 +75,6 @@ const CATEGORY_ORDER = [
   'Sales & CRM',
   'Marketing & Work',
   'Finance & Payroll',
-  'Academy & LMS',
   'Reports',
   'Daily Operations'
 ];
@@ -86,7 +86,6 @@ const CATEGORY_CONFIG = {
   'Sales & CRM': { label: 'Sales & CRM', icon: Target },
   'Marketing & Work': { label: 'Marketing & Work', icon: Megaphone },
   'Finance & Payroll': { label: 'Finance & Payroll', icon: Wallet },
-  'Academy & LMS': { label: 'Academy & LMS', icon: GraduationCap },
   'Reports': { label: 'Reports', icon: BarChart3 },
   'Daily Operations': { label: 'Daily Operations', icon: Clock }
 };
@@ -98,17 +97,9 @@ const menuItems = [
   { icon: Bell, label: 'Notifications', path: '/notifications', category: 'Overview' },
 
   // --- DASHBOARDS ---
-  { icon: LayoutDashboard, label: 'Admin Dashboard', path: '/dashboard', category: 'Dashboards', allowedRoles: ['0', '1', '2', '10', 'admin', 'superadmin', 'MD', 'COO', 'EXECUTIVE_DIRECTOR'], allowedDepartmentNames: ['hr', 'admin', 'hr/admin', 'hr & admin'] },
-  { icon: TrendingUp, label: 'MD Dashboard', path: '/md-dashboard', category: 'Dashboards', allowedRoles: ['0', '1', '2', '10', 'admin', 'superadmin', 'MD', 'COO', 'EXECUTIVE_DIRECTOR'], allowedDepartmentNames: ['hr', 'admin', 'management'] },
+  { icon: TrendingUp, label: 'Dashboard', path: '/dashboard', category: 'Dashboards', allowedRoles: ['0', '1', '2', '10', 'admin', 'superadmin', 'MD', 'COO', 'EXECUTIVE_DIRECTOR'], allowedDepartmentNames: ['hr', 'admin', 'management'] },
   { icon: UserCog, label: 'HR Dashboard', path: '/hr-dashboard', category: 'Dashboards', allowedDesignationNames: ['hr', 'recruiter'] },
-  { icon: Target, label: 'Lead Dashboard', path: '/lead-dashboard', category: 'Dashboards', allowedRoles: ['1', '2', '3', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead', 'tl'], allowedDepartmentNames: ['counselor', 'sales', 'ops', 'marketing'], allowedDesignationNames: ['counselor', 'telecaller', 'ops'] },
   { icon: Megaphone, label: 'Marketing Dashboard', path: '/marketing-dashboard', category: 'Dashboards', allowedRoles: ['1', '2', '3', '10', 'hr', 'admin', 'superadmin', 'marketing', 'manager', 'team_lead', 'teamlead', 'tl'], allowedDepartmentNames: ['marketing', 'digital'] },
-  { icon: Video, label: 'Video Dashboard', path: '/videographer-dashboard', category: 'Dashboards', allowedDesignationNames: ['video', 'editor', 'media'] },
-  { icon: Palette, label: 'GD Dashboard', path: '/graphic-designer-dashboard', category: 'Dashboards', allowedDesignationNames: ['graphic', 'designer', 'ui', 'ux'] },
-  { icon: Code2, label: 'Dev Dashboard', path: '/developer-dashboard', category: 'Dashboards', allowedDepartmentNames: ['r&d', 'dev', 'developer', 'development'] },
-  { icon: GraduationCap, label: 'Counselor Dashboard', path: '/counselor-dashboard', category: 'Dashboards', allowedDesignationNames: ['counselor', 'academic', 'tele'] },
-  { icon: Wallet, label: 'Accountant Dashboard', path: '/accountant-dashboard', category: 'Dashboards', allowedRoles: ['0', '1', '2', '10', 'hr', 'admin', 'accountant', 'superadmin', 'MD', 'COO', 'EXECUTIVE_DIRECTOR'], allowedDepartmentNames: ['accounts', 'finance'], allowedDesignationNames: ['accountant', 'accounts', 'finance'] },
-  { icon: LayoutDashboard, label: 'Dashboard', path: '/common-dashboard', category: 'Dashboards', isCommonDashboardFallback: true },
 
   // --- PEOPLE & HR ---
   { icon: UserCheck, label: 'Recruitment', path: '/recruitment', category: 'People & HR', allowedRoles: ['0', '1', '2', '3', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead', 'recruiter'], allowedDesignationNames: ['hr', 'recruiter', 'admin', 'manager'] },
@@ -117,13 +108,14 @@ const menuItems = [
   { icon: ShieldCheck, label: 'Sidebar Permissions', path: '/sidebar-permissions', category: 'People & HR', allowedRoles: ['0', 'superadmin'], allowedDepartmentNames: ['hr', 'admin', 'hr/admin', 'hr & admin'] },
 
   // --- SALES & CRM ---
-  { icon: PhoneCall, label: 'Student Leads', path: '/leads-telecaller', category: 'Sales & CRM', allowedDesignationNames: ['counselor', 'telecaller', 'ops'], allowedRoles: ['1', '2', 'hr', 'admin', 'superadmin'], allowedDepartmentNames: ['hr', 'admin'] },
   { icon: Briefcase, label: 'Client Leads', path: '/client-leads', category: 'Sales & CRM', allowedRoles: ['1', '2', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead'] },
   { icon: Building2, label: 'Clients', path: '/clients', category: 'Sales & CRM', allowedRoles: ['1', '2', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead'] },
 
   // --- MARKETING & WORK ---
   { icon: Calendar, label: 'Content Calendar', path: '/calendar-work', category: 'Marketing & Work' },
   { icon: FolderKanban, label: 'Projects', path: '/projects', category: 'Marketing & Work', allowedRoles: ['1', '2', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead'] },
+  { icon: ClipboardCheck, label: 'Client Review', path: '/client-review', category: 'Marketing & Work' },
+  { icon: Share2, label: 'Social Media', path: '/social-media', category: 'Marketing & Work' },
 
   // --- FINANCE & PAYROLL ---
   { icon: Wallet, label: 'Accounts', path: '/accounts', category: 'Finance & Payroll', children: [
@@ -143,29 +135,10 @@ const menuItems = [
   { icon: Receipt, label: 'Payslips', path: '/payslips', category: 'Finance & Payroll', allowedRoles: ['0', '1', '2', '10', 'hr', 'admin', 'accountant', 'superadmin', 'MD', 'COO', 'EXECUTIVE_DIRECTOR'], allowedDepartmentNames: ['hr', 'admin', 'accounts', 'finance'], allowedDesignationNames: ['hr', 'recruiter', 'accountant', 'finance', 'accounts'] },
   { icon: CreditCard, label: 'Personal Payslip', path: '/my-payslip', category: 'Finance & Payroll' },
 
-  // --- ACADEMY & LMS ---
-  { icon: BookOpen, label: 'Course Management', path: '/academy/courses', category: 'Academy & LMS', allowedRoles: ['1', '2', 'hr', 'admin'], allowedDepartments: ['6a3caed51194353cbc8a3686'] },
-  { icon: Layers, label: 'Batches', path: '/academy/batches', category: 'Academy & LMS', allowedRoles: ['1', '2', 'hr', 'admin'], allowedDepartments: ['6a3caed51194353cbc8a3686'] },
-  { icon: School, label: 'Enrollment Tracking', path: '/academy/enrollments', category: 'Academy & LMS', allowedRoles: ['1', '2', 'hr', 'admin'], allowedDepartments: ['6a3caed51194353cbc8a3686'] },
-  { icon: GraduationCap, label: 'My LMS Learning', path: '/academy/learning', category: 'Academy & LMS', allowedRoles: ['10', 'student', '1', '2', 'admin', 'superadmin'] },
-  { icon: Clipboard, label: 'Student Attendance', path: '/student-attendance', category: 'Academy & LMS', allowedRoles: ['1', '2', 'hr', 'admin'] },
-
   // --- REPORTS ---
-  { icon: ClipboardCheck, label: 'HR Shift Report', path: '/hr-report', category: 'Reports', allowedDesignationNames: ['hr', 'recruiter'] },
-  { icon: Calculator, label: 'Accountant Shift Report', path: '/accountant-report', category: 'Reports', allowedDesignationNames: ['accountant', 'accounts', 'finance'] },
   { icon: Sparkles, label: 'AI Reports', path: '/ai-report', category: 'Reports' },
-  { icon: Award, label: 'KPI Analytics', path: '/performance-dashboard', category: 'Reports', allowedRoles: ['1', '2', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead', 'tl'] },
-  { icon: BarChart2, label: 'Employee Reports', path: '/employee-reports', category: 'Reports', allowedRoles: ['hr', 'admin'] },
-  { icon: UsersRound, label: 'Team Reports', path: '/team-reports', category: 'Reports', isTeamLeadOnly: true },
-  { icon: FileCode, label: 'Developer Report', path: '/developer-report', category: 'Reports', allowedDesignationNames: ['developer', 'dev', 'junior', 'jr', 'software', 'engineer', 'react', 'node', 'flutter', 'coder', 'programmer', 'frontend', 'backend', 'fullstack', 'web'] },
-  { icon: Lightbulb, label: 'HOD R&D Report', path: '/hod-rd-report', category: 'Reports', allowedDesignationNames: ['hod'] },
-  { icon: Paintbrush, label: 'Graphic Designer Report', path: '/graphic-designer-report', category: 'Reports', allowedDesignationNames: ['graphic', 'designer', 'ui', 'ux'] },
-  { icon: FileVideo, label: 'Videographer Report', path: '/videographer-report', category: 'Reports', allowedDesignationNames: ['video', 'editor', 'media'] },
-  { icon: BookOpenCheck, label: 'Academic Counselor Report', path: '/academic-counselor-report', category: 'Reports', allowedDesignationNames: ['counselor', 'academic', 'tele'] },
-  { icon: Sliders, label: 'Ops Shift Report', path: '/ops-report', category: 'Reports', allowedDesignationNames: ['ops', 'operation', 'sales'] },
-  { icon: PieChart, label: 'Marketing Shift Report', path: '/marketing-report', category: 'Reports', allowedDesignationNames: ['marketing', 'marketer', 'digital'] },
-  { icon: Megaphone, label: 'HOD Marketing Report', path: '/hod-marketing-report', category: 'Reports', allowedRoles: ['1', '2', 'admin', 'hr', 'superadmin', 'manager'], allowedDesignationNames: ['marketing', 'marketer', 'hod', 'head', 'cmo', 'digital'] },
-  { icon: ClipboardList, label: 'Daily Report', path: '/basic-report', category: 'Reports', isBasicReportFallback: true },
+  { icon: Award, label: 'Performance Dashboard', path: '/performance-dashboard', category: 'Reports', allowedRoles: ['1', '2', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead', 'tl'] },
+  { icon: PieChart, label: 'Marketing Report', path: '/marketing-report', category: 'Reports', allowedDesignationNames: ['marketing', 'marketer', 'digital'] },
   { icon: FileText, label: 'Daily Shift Report', path: '/daily-shift-report', category: 'Reports' },
 
   // --- DAILY OPERATIONS ---
@@ -617,12 +590,19 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
         }`}
       >
         {/* Logo header */}
-        <div className="h-16 flex items-center justify-between px-5 shrink-0 overflow-hidden border-b border-slate-100 dark:border-slate-800/40">
-          <div className="flex items-center gap-3">
-            {!isCollapsed ? (
-              <img src="/logo3.png" alt="StaffHQ Logo" className="h-8 w-auto object-contain" />
-            ) : (
-              <img src="/logo2.png" alt="StaffHQ Logo Icon" className="h-8 w-8 object-contain shrink-0" />
+        <div className={`h-16 flex items-center justify-between shrink-0 overflow-hidden border-b border-slate-100 dark:border-slate-800/40 ${isCollapsed ? 'px-2 justify-between' : 'px-5'}`}>
+          <div className="flex items-center gap-3 overflow-hidden">
+            <img 
+              src="/logo2.png" 
+              alt="DIGI 360 Icon" 
+              className={`object-contain shrink-0 transition-all duration-300 ${
+                isCollapsed ? 'h-11 w-11 scale-110 drop-shadow-sm' : 'h-9 w-9'
+              }`} 
+            />
+            {!isCollapsed && (
+              <span className="font-black text-xl tracking-tight text-slate-900 dark:text-white whitespace-nowrap">
+                DIGI <span className="text-blue-600 dark:text-blue-400">360°</span>
+              </span>
             )}
           </div>
           <button
@@ -691,7 +671,12 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
         }`}
       >
         <div className="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-800/80 shrink-0">
-          <img src="/logo3.png" alt="StaffHQ Logo" className="h-8 w-auto object-contain" />
+          <div className="flex items-center gap-3">
+            <img src="/logo2.png" alt="DIGI 360 Icon" className="h-9 w-9 object-contain shrink-0" />
+            <span className="font-black text-xl tracking-tight text-slate-900 dark:text-white">
+              DIGI <span className="text-blue-600 dark:text-blue-400">360°</span>
+            </span>
+          </div>
           <button 
             onClick={() => setIsMobileOpen(false)}
             className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -775,7 +760,7 @@ const NavItem = ({ icon, label, to, active, isLogout, isCollapsed, onClick, chil
             }}
             className={`flex-1 flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 
               ${isParentActive 
-                ? 'text-white bg-indigo-600 shadow-md shadow-indigo-500/15 font-semibold' 
+                ? 'text-white bg-gradient-to-r from-sky-500 to-blue-600 shadow-md shadow-sky-500/20 font-semibold' 
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 font-medium'
               }`}
           >
@@ -876,7 +861,7 @@ const NavItem = ({ icon, label, to, active, isLogout, isCollapsed, onClick, chil
       <div
         className={`relative w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 
           ${active 
-            ? 'text-white bg-indigo-600 shadow-md shadow-indigo-500/15' 
+            ? 'text-white bg-gradient-to-r from-sky-500 to-blue-600 shadow-md shadow-sky-500/20' 
             : isLogout 
               ? 'text-rose-500 hover:bg-rose-500/10'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50'

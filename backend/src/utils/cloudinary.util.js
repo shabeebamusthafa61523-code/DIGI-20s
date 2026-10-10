@@ -17,7 +17,7 @@ export const uploadToCloudinary = (fileBuffer, originalName = 'lms_file') => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         resource_type: 'auto',
-        folder: 'kodbrand_lms',
+        folder: 'digi360_lms',
         public_id: `${Date.now()}_${originalName.replace(/[^a-zA-Z0-9]/g, '_')}`
       },
       (error, result) => {

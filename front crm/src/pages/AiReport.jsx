@@ -13,6 +13,7 @@ const API_URL = import.meta.env?.VITE_API_URL || import.meta.env?.REACT_APP_API_
 const QUICK_PROMPT_CHIPS = [
   '⚡ Focus on Development Bottlenecks',
   '📊 Highlight Top KPI Performers',
+  '💰 Profitability & Client ROI Analytics',
   '🎯 Analyze Pending & Overdue Tasks',
   '🏆 Evaluate Team Lead & HR Ratings'
 ];

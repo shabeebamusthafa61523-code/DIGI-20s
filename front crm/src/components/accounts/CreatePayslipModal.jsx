@@ -232,7 +232,7 @@ const CreatePayslipModal = ({ isOpen, onClose, onSuccess }) => {
               </div>
               <div>
                 <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight">Create Official Employee Payslip</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Generate itemized KOD.BRAND salary slip</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Generate itemized DIGI 360 salary slip</p>
               </div>
             </div>
             <button
@@ -478,7 +478,7 @@ const CreatePayslipModal = ({ isOpen, onClose, onSuccess }) => {
                   </div>
                 )}
                 <div>
-                  <label className="block text-[11px] text-slate-500 font-semibold mb-1">KODBRAND Integrity</label>
+                  <label className="block text-[11px] text-slate-500 font-semibold mb-1">DIGI 360 Integrity</label>
                   <input
                     type="number"
                     value={integrityAward}

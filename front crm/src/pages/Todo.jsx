@@ -73,6 +73,90 @@ const formatDateTimeDisplay = (dVal) => {
   }
 };
 
+const getTaskTimeLogKey = (taskId) => `digi360_task_timelog_${taskId}`;
+
+const getTaskTimeLog = (task) => {
+  if (!task) return { startedAt: null, completedAt: null };
+  const taskId = (task.id || task._id || '').toString();
+  
+  let startedAt = task.startedAt || task.started_at || task.current_started_at || null;
+  let completedAt = task.completedAt || task.completed_at || task.done_at || null;
+
+  try {
+    const raw = localStorage.getItem(getTaskTimeLogKey(taskId));
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (!startedAt && parsed.startedAt) startedAt = parsed.startedAt;
+      if (!completedAt && parsed.completedAt) completedAt = parsed.completedAt;
+    }
+  } catch (e) {}
+
+  return { startedAt, completedAt };
+};
+
+const recordTaskStatusTime = (taskId, oldStatus, newStatus, createdAt) => {
+  if (!taskId) return { startedAt: null, completedAt: null };
+  const cleanId = (typeof taskId === 'object' ? (taskId._id || taskId.id) : taskId).toString();
+  const logKey = getTaskTimeLogKey(cleanId);
+  let timeLog = { startedAt: null, completedAt: null };
+  try {
+    const raw = localStorage.getItem(logKey);
+    if (raw) timeLog = JSON.parse(raw);
+  } catch (e) {}
+
+  const nowIso = new Date().toISOString();
+
+  // Moving to 'current' from 'pending' or initial creation
+  if (newStatus === 'current' && !timeLog.startedAt) {
+    timeLog.startedAt = nowIso;
+  }
+
+  // Moving to 'done' (Completed)
+  if (newStatus === 'done') {
+    if (!timeLog.startedAt) {
+      timeLog.startedAt = createdAt ? new Date(createdAt).toISOString() : nowIso;
+    }
+    timeLog.completedAt = nowIso;
+  }
+
+  if (newStatus === 'pending') {
+    timeLog.completedAt = null;
+  }
+
+  try {
+    localStorage.setItem(logKey, JSON.stringify(timeLog));
+  } catch (e) {}
+
+  return timeLog;
+};
+
+const formatDurationString = (ms) => {
+  if (!ms || ms < 0) return '0m';
+  const totalSecs = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+
+  if (hours > 0) return `${hours}h ${mins}m`;
+  if (mins > 0) return `${mins}m ${secs}s`;
+  return `${secs}s`;
+};
+
+const formatFullDurationString = (ms) => {
+  if (!ms || ms < 0) return '0 mins';
+  const totalSecs = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+
+  const parts = [];
+  if (hours > 0) parts.push(`${hours} ${hours === 1 ? 'hr' : 'hrs'}`);
+  if (mins > 0) parts.push(`${mins} ${mins === 1 ? 'min' : 'mins'}`);
+  if (secs > 0 && hours === 0) parts.push(`${secs} ${secs === 1 ? 'sec' : 'secs'}`);
+
+  return parts.join(' ') || '0 mins';
+};
+
 const getDatetimeLocalValue = (dVal) => {
   if (!dVal) return '';
   try {
@@ -314,6 +398,12 @@ const fetchData = useCallback(async () => {
     const { destination, draggableId } = result;
     if (!destination) return;
     const newStatus = destination.droppableId;
+    const taskObj = tasks.find(t => (t.id || t._id || '').toString() === draggableId);
+    const oldStatus = taskObj ? taskObj.status : 'pending';
+    const createdAt = taskObj ? (taskObj.createdAt || taskObj.created_at) : null;
+
+    recordTaskStatusTime(draggableId, oldStatus, newStatus, createdAt);
+
     const oldTasks = [...tasks];
     setTasks(prev => prev.map(t => (t.id || t._id || '').toString() === draggableId ? { ...t, status: newStatus } : t));
     try {
@@ -1528,6 +1618,7 @@ const DetailModal = ({ task, currentUserId, onClose, onUpdate, getAuthHeaders, D
       });
 
       if (editForm.status !== task.status) {
+        recordTaskStatusTime(task.id || task._id, task.status, editForm.status, task.createdAt || task.created_at);
         await fetch(`${API_BASE}/tasks/task-status/${task.id}?status=${editForm.status}`, {
           method: "PUT",
           headers: getAuthHeaders()
@@ -1607,6 +1698,7 @@ const DetailModal = ({ task, currentUserId, onClose, onUpdate, getAuthHeaders, D
 
   const handleStatusChange = async (newStatus) => {
     setEditForm(prev => ({ ...prev, status: newStatus }));
+    recordTaskStatusTime(task.id || task._id, task.status, newStatus, task.createdAt || task.created_at);
 
     try {
       await fetch(`${API_BASE}/tasks/task-status/${task.id}?status=${newStatus}`, {
@@ -1882,6 +1974,73 @@ const DetailModal = ({ task, currentUserId, onClose, onUpdate, getAuthHeaders, D
                 </div>
               </div>
             )}
+
+            {/* TASK STATUS EXECUTION TIME TRACKER */}
+            {(() => {
+              const timeLog = getTaskTimeLog(task);
+              let durationText = 'Pending start (Move to Current to start timer)';
+              let isLive = false;
+
+              if (timeLog.startedAt && timeLog.completedAt) {
+                const ms = new Date(timeLog.completedAt) - new Date(timeLog.startedAt);
+                durationText = `${formatFullDurationString(ms)} (Pending → Completed)`;
+              } else if (timeLog.startedAt && (task.status === 'current' || task.status === 'preview')) {
+                const ms = Date.now() - new Date(timeLog.startedAt).getTime();
+                durationText = `${formatFullDurationString(ms)} (Currently In Progress)`;
+                isLive = true;
+              } else if (task.status === 'done') {
+                const start = timeLog.startedAt ? new Date(timeLog.startedAt) : (task.createdAt ? new Date(task.createdAt) : new Date());
+                const end = timeLog.completedAt ? new Date(timeLog.completedAt) : (task.updatedAt ? new Date(task.updatedAt) : new Date());
+                const ms = Math.max(0, end - start);
+                durationText = `${formatFullDurationString(ms)} (Completed)`;
+              }
+
+              return (
+                <div className="my-4 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-indigo-950 text-white border border-slate-800 shadow-xl space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-indigo-400 animate-pulse" />
+                      <span className="text-xs font-black uppercase tracking-wider text-indigo-300">
+                        Task Execution Time Tracker
+                      </span>
+                    </div>
+                    <span className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border ${
+                      task.status === 'done' 
+                        ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' 
+                        : task.status === 'current' || isLive 
+                        ? 'bg-amber-500/20 text-amber-400 border-amber-500/30 animate-pulse'
+                        : 'bg-slate-700/50 text-slate-300 border-slate-600'
+                    }`}>
+                      {task.status === 'done' ? 'Completed' : task.status === 'current' ? 'In Progress' : 'Pending Start'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
+                    <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                      <span className="text-[9px] font-extrabold uppercase text-slate-400 block mb-0.5">Started (Moved to Current)</span>
+                      <p className="font-bold text-slate-200 truncate">
+                        {timeLog.startedAt ? formatDateTimeDisplay(timeLog.startedAt) : 'Not Started Yet'}
+                      </p>
+                    </div>
+
+                    <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                      <span className="text-[9px] font-extrabold uppercase text-slate-400 block mb-0.5">Finished (Moved to Completed)</span>
+                      <p className="font-bold text-slate-200 truncate">
+                        {timeLog.completedAt ? formatDateTimeDisplay(timeLog.completedAt) : (task.status === 'done' ? formatDateTimeDisplay(task.updatedAt || new Date()) : 'In Progress')}
+                      </p>
+                    </div>
+
+                    <div className="bg-indigo-900/40 p-3 rounded-xl border border-indigo-500/30 flex flex-col justify-center">
+                      <span className="text-[9px] font-extrabold uppercase text-indigo-300 block mb-0.5">Total Execution Time</span>
+                      <p className="text-sm font-black text-indigo-200 flex items-center gap-1.5 truncate">
+                        <Clock size={14} className="text-indigo-400 shrink-0" />
+                        <span>{durationText}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Subtasks Section inside Detail Modal */}
             <SubtasksSection 

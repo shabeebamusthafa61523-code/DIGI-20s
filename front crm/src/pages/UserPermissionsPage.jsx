@@ -40,6 +40,8 @@ const ALL_SIDEBAR_ITEMS = [
   { label: 'Clients', path: '/clients', category: 'Management', desc: 'Client directory & company profiles' },
   { label: 'Projects', path: '/projects', category: 'Management', desc: 'Project tracking & milestones' },
   { label: 'Content Calendar', path: '/calendar-work', category: 'Management', desc: 'Social media & marketing content scheduling calendar' },
+  { label: 'Client Review', path: '/client-review', category: 'Management', desc: 'Client deliverable review & approval portal' },
+  { label: 'Social Media', path: '/social-media', category: 'Management', desc: 'Multi-platform social media integration & auto-publisher studio' },
   { label: 'Users', path: '/users', category: 'Management', desc: 'Employee & user account management' },
   { label: 'Departments', path: '/departments', category: 'Management', desc: 'Department hierarchy & manager assignments' },
   { label: 'Sidebar Permissions', path: '/sidebar-permissions', category: 'Management', desc: 'Custom user menu permission configuration' },
@@ -79,7 +81,7 @@ const ALL_SIDEBAR_ITEMS = [
   { label: 'Ops Shift Report', path: '/ops-report', category: 'Reports', desc: 'Operations shift reports' },
   { label: 'Accountant Shift Report', path: '/accountant-report', category: 'Reports', desc: 'Accountant shift reports' },
   { label: 'Marketing Shift Report', path: '/marketing-report', category: 'Reports', desc: 'Marketing shift reports' },
-  { label: 'Daily Shift Report', path: '/daily-shift-report', category: 'Reports', desc: 'Official KOD.BRAND daily shift report & operational log' },
+  { label: 'Daily Shift Report', path: '/daily-shift-report', category: 'Reports', desc: 'Official DIGI 360 daily shift report & operational log' },
 
   // Finance & Accounts
   { label: 'Accounts', path: '/accounts', category: 'Finance', desc: 'Expense management, salary & cash book overview' },

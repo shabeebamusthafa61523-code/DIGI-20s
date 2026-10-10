@@ -120,7 +120,7 @@ const PayslipModal = ({ isOpen, onClose, salaryRecord, onSaved, isSmall = false 
       advanceSalary:      Number(rec.advanceSalary || 0),
       otherDeductions:    Number(rec.otherDeductions || 0),
       otherDeductionsRemark: rec.otherDeductionsRemark || '',
-      companyName:        rec.companyName || 'KODBRAND SOLUTIONS',
+      companyName:        rec.companyName || 'DIGI 360 SOLUTIONS',
       companyAddressLine1: rec.companyAddressLine1 || '3rd Floor, Aranyakam Building',
       companyAddressLine2: rec.companyAddressLine2 || 'thamarauzhi road, up hill',
       companyAddressLine3: rec.companyAddressLine3 || 'malappuram, kerala-676505',
@@ -429,7 +429,7 @@ const PayslipModal = ({ isOpen, onClose, salaryRecord, onSaved, isSmall = false 
                 <FileText size={13} />
               </div>
               <div>
-                <h3 className="text-[11px] font-black text-slate-900 leading-none">Official KOD.BRAND Salary Slip</h3>
+                <h3 className="text-[11px] font-black text-slate-900 leading-none">Official DIGI 360 Salary Slip</h3>
                 <p className="text-[9px] text-slate-500 font-medium leading-none mt-0.5">{edited.month} — {edited.empName}</p>
               </div>
             </div>
@@ -531,7 +531,7 @@ const PayslipModal = ({ isOpen, onClose, salaryRecord, onSaved, isSmall = false 
                 <div className="flex flex-col justify-center">
                   <img
                     src="/logo3.png"
-                    alt="KOD.Brand Logo"
+                    alt="DIGI 360 Logo"
                     className="h-8 sm:h-9 w-auto object-contain"
                     crossOrigin="anonymous"
                   />
@@ -634,7 +634,7 @@ const PayslipModal = ({ isOpen, onClose, salaryRecord, onSaved, isSmall = false 
                           ['specialAllowance', 'Special Allowance'],
                           ['transportAllowance', 'Transport Allowance'],
                           ['otherAllowance', 'Other Allowance'],
-                          ['integrityAward', 'KODBRAND Integrity Award'],
+                          ['integrityAward', 'DIGI 360 Integrity Award'],
                           ['bonus', 'Bonus'],
                         ].map(([field, label]) => (
                           <tr key={field}>
@@ -730,7 +730,7 @@ const PayslipModal = ({ isOpen, onClose, salaryRecord, onSaved, isSmall = false 
                     </div>
                   ) : (
                     <>
-                      <p className="font-black text-[#0D1E4A]">{edited.companyName || 'KODBRAND SOLUTIONS'}</p>
+                      <p className="font-black text-[#0D1E4A]">{edited.companyName || 'DIGI 360 SOLUTIONS'}</p>
                       <p>{edited.companyAddressLine1 || '3rd Floor, Aranyakam Building'}</p>
                       <p>{edited.companyAddressLine2 || 'thamarauzhi road, up hill'}</p>
                       <p>{edited.companyAddressLine3 || 'malappuram, kerala-676505'}</p>
@@ -825,7 +825,7 @@ const PayslipModal = ({ isOpen, onClose, salaryRecord, onSaved, isSmall = false 
                 className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs outline-none focus:border-indigo-600 font-semibold text-slate-900"
               />
               <p className="text-[10px] text-slate-400 font-normal">
-                The official KOD.BRAND salary statement will be emailed to this recipient.
+                The official DIGI 360 salary statement will be emailed to this recipient.
               </p>
             </div>
 

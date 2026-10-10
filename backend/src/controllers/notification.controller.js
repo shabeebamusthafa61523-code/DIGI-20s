@@ -65,7 +65,7 @@ export const createNotification = async (req, res) => {
           sendEmail(
             u.email,
             `🔔 ${title || 'New Notification'}`,
-            `<p>Hello <strong>${u.name || 'Team Member'}</strong>,</p><div style="white-space: pre-wrap; font-family: inherit; line-height: 1.6;">${description.trim()}</div>${imageHtml}<p>- Sent via KOD.BRAND CRM HQ</p>`,
+            `<p>Hello <strong>${u.name || 'Team Member'}</strong>,</p><div style="white-space: pre-wrap; font-family: inherit; line-height: 1.6;">${description.trim()}</div>${imageHtml}<p>- Sent via DIGI 360 CRM HQ</p>`,
             description.trim()
           );
         }

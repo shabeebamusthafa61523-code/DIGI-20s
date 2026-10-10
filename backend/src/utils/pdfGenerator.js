@@ -459,7 +459,7 @@ export const generateReportPDFBuffer = (report, empName, designation) => {
         doc.switchToPage(i);
         doc.fillColor('#94a3b8').font('Helvetica').fontSize(7.5);
         doc.text(
-          `Page ${i + 1} of ${pages.count}  |  KOD.brand Command Center © ${new Date().getFullYear()}`,
+          `Page ${i + 1} of ${pages.count}  |  DIGI 360 Command Center © ${new Date().getFullYear()}`,
           40,
           790,
           { align: 'center', width: 515 }

@@ -678,7 +678,7 @@ const DailyShiftReportPage = () => {
     }
   };
 
-  // Export PDF Handler matching KOD.BRAND official styling
+  // Export PDF Handler matching DIGI 360 official styling
   const handleDownloadPDF = async () => {
     // Automatically save report to database of that user when downloading
     await handleSaveReport();
@@ -723,7 +723,7 @@ const DailyShiftReportPage = () => {
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(20);
           doc.setTextColor(30, 41, 59);
-          doc.text("KOD.BRAND", 14, 20);
+          doc.text("DIGI 360", 14, 20);
           resolve();
         };
       });
@@ -1411,13 +1411,13 @@ const DailyShiftReportPage = () => {
             </div>
           )}
 
-          {/* PRINTABLE DOCUMENT CARD (Matching exact KOD.BRAND paper design) */}
+          {/* PRINTABLE DOCUMENT CARD (Matching exact DIGI 360 paper design) */}
           <div className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-xl p-6 lg:p-10 space-y-6 print:shadow-none print:border-none print:p-0">
 
         {/* LOGO & TITLE HEADER */}
         <div className="flex flex-col sm:flex-row items-center justify-between border-b-2 border-slate-900 dark:border-slate-700 pb-5 gap-4">
           <div className="flex items-center gap-3">
-            <img src="/logo3.png" alt="KOD.BRAND Logo" className="h-12 sm:h-14 w-auto object-contain" />
+            <img src="/logo3.png" alt="DIGI 360 Logo" className="h-16 sm:h-18 w-auto object-contain" />
           </div>
 
           <div className="text-right sm:text-right text-center">
@@ -2163,7 +2163,7 @@ const DailyShiftReportPage = () => {
 
         {/* FOOTER BRANDING */}
         <div className="pt-6 border-t border-slate-200 dark:border-slate-800 text-center space-y-1">
-          <p className="text-xs font-black tracking-widest text-slate-400 uppercase">KOD.BRAND • TURN WORK INTO PROGRESS</p>
+          <p className="text-xs font-black tracking-widest text-slate-400 uppercase">DIGI 360 • TURN WORK INTO PROGRESS</p>
           <p className="text-[10px] text-slate-400">Confidential Internal Daily Operations & Shift Log</p>
         </div>
 

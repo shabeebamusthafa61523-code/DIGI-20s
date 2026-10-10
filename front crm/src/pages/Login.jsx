@@ -176,8 +176,8 @@ const Login = () => {
          <div className="flex justify-center items-center mb-10">
           <img 
             src="/logo2.png" 
-            alt="KODBRAND Logo" 
-            className="h-22 w-auto object-contain" 
+            alt="DIGI 360 Logo" 
+            className="h-28 sm:h-32 w-auto object-contain transition-all duration-300 drop-shadow-md" 
           />
         </div>
 
@@ -256,7 +256,7 @@ const Login = () => {
               whileTap={{ scale: 0.98 }} 
               disabled={isLoading} 
               type="submit" 
-              className="w-full py-5 bg-gradient-to-r from-indigo-600 to-cyan-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 cursor-pointer"
+              className="w-full py-5 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 disabled:opacity-50 cursor-pointer"
             >
               {isLoading ? "Verifying..." : "Authorize Access"} 
               {!isLoading && <ChevronRight size={18} />}

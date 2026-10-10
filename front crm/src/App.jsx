@@ -77,6 +77,8 @@ import CreateProjectPage from './pages/CreateProjectPage';
 import ProjectDetailsPage from './pages/ProjectDetailsPage';
 import VisibleWorkPage from './pages/VisibleWorkPage';
 import ProjectReportsPage from './pages/ProjectReportsPage';
+import ClientReviewApprovalPage from './pages/ClientReviewApprovalPage';
+import SocialMediaIntegrationPage from './pages/SocialMediaIntegrationPage';
 
 
 
@@ -186,7 +188,7 @@ function App() {
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
 
         {/* Protected Routes - Wrapped in MainLayout */}
-        <Route path="/dashboard" element={<ProtectedRoute><MainLayout><Dashboard /></MainLayout></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><MainLayout><MdDashboard /></MainLayout></ProtectedRoute>} />
         <Route path="/lead-dashboard" element={<ProtectedRoute><MainLayout><LeadDashboard /></MainLayout></ProtectedRoute>} />
         <Route path="/marketing-dashboard" element={<ProtectedRoute><MainLayout><MarketingDashboard /></MainLayout></ProtectedRoute>} />
         <Route path="/attendance" element={<ProtectedRoute><MainLayout><Attendance /></MainLayout></ProtectedRoute>} />
@@ -273,6 +275,11 @@ function App() {
         <Route path="/projects/reports" element={<ProtectedRoute><MainLayout><RestrictedRoute><ProjectReportsPage /></RestrictedRoute></MainLayout></ProtectedRoute>} />
         <Route path="/projects/:id" element={<ProtectedRoute><MainLayout><RestrictedRoute><ProjectDetailsPage /></RestrictedRoute></MainLayout></ProtectedRoute>} />
         <Route path="/projects/:id/visible-work" element={<ProtectedRoute><MainLayout><RestrictedRoute><VisibleWorkPage /></RestrictedRoute></MainLayout></ProtectedRoute>} />
+        <Route path="/client-review" element={<ProtectedRoute><MainLayout><ClientReviewApprovalPage /></MainLayout></ProtectedRoute>} />
+        <Route path="/client-review/:id" element={<ProtectedRoute><MainLayout><ClientReviewApprovalPage /></MainLayout></ProtectedRoute>} />
+        <Route path="/social-media" element={<ProtectedRoute><MainLayout><SocialMediaIntegrationPage /></MainLayout></ProtectedRoute>} />
+        <Route path="/social-media-integration" element={<ProtectedRoute><MainLayout><SocialMediaIntegrationPage /></MainLayout></ProtectedRoute>} />
+        <Route path="/social" element={<ProtectedRoute><MainLayout><SocialMediaIntegrationPage /></MainLayout></ProtectedRoute>} />
 
         {/* Content Calendar Module Route */}
         <Route path="/calendar-work" element={<ProtectedRoute><MainLayout><CalendarWorkPage /></MainLayout></ProtectedRoute>} />

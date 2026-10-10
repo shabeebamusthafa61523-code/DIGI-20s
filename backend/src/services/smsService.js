@@ -28,7 +28,7 @@ const formatMobileNumber = (mobileStr) => {
  * @param {Object} options
  * @param {string} options.to - Recipient phone number (e.g., "+919876543210" or "9876543210")
  * @param {string} options.message - Text message (max 160 chars per SMS segment)
- * @param {string} [options.sender] - Alphanumeric Sender ID (max 11 chars e.g. "KODBRAND")
+ * @param {string} [options.sender] - Alphanumeric Sender ID (max 11 chars e.g. "DIGI 360")
  * @param {string} [options.tag] - Tracking tag
  */
 export const sendSms = async ({ to, message, sender = null, tag = 'crm_sms' }) => {
@@ -41,7 +41,7 @@ export const sendSms = async ({ to, message, sender = null, tag = 'crm_sms' }) =
     return { success: false, message: 'SMS message text is required.' };
   }
 
-  const senderId = (sender || process.env.BREVO_SMS_SENDER || process.env.SMS_SENDER_ID || 'KODBRAND').substring(0, 11);
+  const senderId = (sender || process.env.BREVO_SMS_SENDER || process.env.SMS_SENDER_ID || 'DIGI 360').substring(0, 11);
 
   // 1. Primary: Try Brevo Transactional SMS API
   const brevoApiKey = process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY;
@@ -125,7 +125,7 @@ export const sendSms = async ({ to, message, sender = null, tag = 'crm_sms' }) =
  * @param {string|number} otpCode - One-Time Password
  */
 export const sendOtpSms = async (to, otpCode) => {
-  const message = `Your KOD.BRAND verification code is: ${otpCode}. Valid for 10 minutes. Do not share this code with anyone.`;
+  const message = `Your DIGI 360 verification code is: ${otpCode}. Valid for 10 minutes. Do not share this code with anyone.`;
   return sendSms({ to, message, tag: 'otp_verification' });
 };
 
@@ -136,7 +136,7 @@ export const sendOtpSms = async (to, otpCode) => {
  * @param {string} details - Details
  */
 export const sendAlertSms = async (to, alertTitle, details) => {
-  const message = `⚠️ KOD.BRAND ALERT: ${alertTitle}. ${details}`;
+  const message = `⚠️ DIGI 360 ALERT: ${alertTitle}. ${details}`;
   return sendSms({ to, message, tag: 'urgent_alert' });
 };
 

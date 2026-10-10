@@ -6,7 +6,7 @@ dotenv.config();
 
 async function run() {
   try {
-    const mongoUri = process.env.DATABASE_URL || process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/crm';
+    const mongoUri = process.env.DATABASE_URL || process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/digicrm';
     console.log('Connecting to MongoDB...');
     await mongoose.connect(mongoUri);
     console.log('Connected!');

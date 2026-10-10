@@ -58,7 +58,7 @@ export const sendEmail = async (to, subject, htmlContent, textFallback = '') => 
     }
 
     // 2. Secondary: Fallback to SMTP or Simulation
-    const fromAddress = process.env.SMTP_FROM || process.env.EMAIL_FROM || '"KOD.BRAND CRM" <no-reply@kodbrand.com>';
+    const fromAddress = process.env.SMTP_FROM || process.env.EMAIL_FROM || '"DIGI 360 CRM" <no-reply@digi360.com>';
     const transporter = createTransporter();
 
     if (!transporter) {
@@ -127,7 +127,7 @@ export const sendTaskAssignmentEmail = async ({ recipientEmail, recipientName, t
     <body>
       <div class="container">
         <div class="header">
-          <h1>KOD.BRAND Command HQ</h1>
+          <h1>DIGI 360 Command HQ</h1>
           <p>New Task Assignment</p>
         </div>
         <div class="body">
@@ -145,7 +145,7 @@ export const sendTaskAssignmentEmail = async ({ recipientEmail, recipientName, t
           <p style="font-size: 13px; color: #64748b;">Log into your CRM workspace to view full attachments, progress notes, and start working on this task.</p>
         </div>
         <div class="footer">
-          &copy; ${new Date().getFullYear()} KOD.BRAND Command HQ. All rights reserved.
+          &copy; ${new Date().getFullYear()} DIGI 360 Command HQ. All rights reserved.
         </div>
       </div>
     </body>
@@ -194,7 +194,7 @@ export const sendTaskStatusUpdateEmail = async ({ recipientEmail, recipientName,
           </div>
         </div>
         <div class="footer">
-          KOD.BRAND CRM System Notification
+          DIGI 360 CRM System Notification
         </div>
       </div>
     </body>
@@ -255,7 +255,7 @@ export const sendNotification = async (userId, message, type = 'info', title = '
               <div class="title">🔔 ${title}</div>
               <div class="desc">${message}</div>
               <hr style="border: none; border-top: 1px solid #f1f5f9; margin-top: 16px;"/>
-              <p style="font-size: 11px; color: #94a3b8; margin: 0;">Sent via KOD.BRAND CRM HQ</p>
+              <p style="font-size: 11px; color: #94a3b8; margin: 0;">Sent via DIGI 360 CRM HQ</p>
             </div>
           </body>
           </html>

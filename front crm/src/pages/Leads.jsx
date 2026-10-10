@@ -471,7 +471,7 @@ const Leads = () => {
   const doc = new jsPDF({ orientation: 'landscape' });
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('KOD.BRAND CRM - Leads Directory', 14, 15);
+  doc.text('DIGI 360 CRM - Leads Directory', 14, 15);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(`Export Tab: ${activeTab.toUpperCase()} | Generated: ${new Date().toLocaleString()}`, 14, 21);

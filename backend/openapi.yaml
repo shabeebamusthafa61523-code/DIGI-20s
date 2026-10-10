@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: KOD.BRAND CRM Lead Management & Analytics API
+  title: DIGI 360 CRM Lead Management & Analytics API
   version: 1.0.0
   description: RESTful API spec for role-based Lead Management Dashboard with restricted digital_marketer access, analytics caching, and audit logging.
 servers:

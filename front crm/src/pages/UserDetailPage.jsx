@@ -253,8 +253,8 @@ const UserDetailPage = () => {
           <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 p-1.5 rounded-2xl self-start lg:self-center">
             <button
               onClick={() => setActiveTab('dossier')}
-              className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'dossier'
-                  ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'dossier'
+                  ? 'bg-white dark:bg-slate-800 text-cyan-600 dark:text-cyan-400 shadow-sm'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
             >
@@ -262,12 +262,21 @@ const UserDetailPage = () => {
             </button>
             <button
               onClick={() => setActiveTab('performance')}
-              className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'performance'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'performance'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
             >
               Performance & KPI
+            </button>
+            <button
+              onClick={() => setActiveTab('vault')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'vault'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md'
+                  : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                }`}
+            >
+              Onboarding & Vault
             </button>
           </div>
         </div>
@@ -350,6 +359,67 @@ const UserDetailPage = () => {
       ) : (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
           <PerformanceTab user={user} />
+        </div>
+      )}
+
+      {/* ── Onboarding & Digital Vault Tab ── */}
+      {activeTab === 'vault' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Onboarding Status Checklist */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4">
+            <h3 className="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-slate-100 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <UserCheck className="w-4 h-4 text-cyan-500" /> Employee Onboarding Status
+            </h3>
+            <div className="space-y-3">
+              {[
+                { label: 'Government ID & Address Proof', status: 'Verified', color: 'text-emerald-500 bg-emerald-500/10' },
+                { label: 'Employment Offer Letter', status: 'Signed & Filed', color: 'text-emerald-500 bg-emerald-500/10' },
+                { label: 'Non-Disclosure Agreement (NDA)', status: 'Signed', color: 'text-emerald-500 bg-emerald-500/10' },
+                { label: 'Bank Account & Tax Declaration', status: 'Completed', color: 'text-emerald-500 bg-emerald-500/10' },
+                { label: 'Emergency Contact Record', status: 'Verified', color: 'text-cyan-500 bg-cyan-500/10' },
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-xs">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">{item.label}</span>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${item.color}`}>
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Document Vault */}
+          <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4">
+            <h3 className="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-slate-100 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <ShieldCheck className="w-4 h-4 text-cyan-500" /> Digital Document Vault
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { name: 'Offer_Letter_Signed.pdf', type: 'Employment Document', date: '2026-01-15', icon: Lock },
+                { name: 'NDA_Confidentiality_Agreement.pdf', type: 'Legal Agreement', date: '2026-01-15', icon: Lock },
+                { name: 'Identity_Proof_Aadhaar_Passport.pdf', type: 'KYC Document', date: '2026-01-16', icon: Shield },
+                { name: 'Education_Certificates_Resume.pdf', type: 'Credentials', date: '2026-01-16', icon: Award }
+              ].map((doc, idx) => {
+                const DocIcon = doc.icon;
+                return (
+                  <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between gap-3 group hover:border-cyan-500/50 transition-all">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-500">
+                        <DocIcon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate max-w-[170px]">{doc.name}</p>
+                        <span className="text-[10px] text-slate-400 font-semibold">{doc.type} • {doc.date}</span>
+                      </div>
+                    </div>
+                    <span className="px-2.5 py-1 text-[10px] font-black text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/50 rounded-lg border border-cyan-500/20">
+                      Verified
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       )}
 

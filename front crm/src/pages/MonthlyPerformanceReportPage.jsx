@@ -234,7 +234,7 @@ export default function MonthlyPerformanceReportPage() {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
         doc.setTextColor(30, 41, 59);
-        doc.text("KOD.BRAND", 14, 20);
+        doc.text("DIGI 360", 14, 20);
         resolve();
       };
     });
@@ -549,7 +549,7 @@ export default function MonthlyPerformanceReportPage() {
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(100, 100, 100);
-      doc.text(`KOD.BRAND Digital Marketing Solutions Pvt Ltd | Official CRM Reporting Template`, 14, 287);
+      doc.text(`DIGI 360 Digital Marketing Solutions Pvt Ltd | Official CRM Reporting Template`, 14, 287);
       doc.setFont('helvetica', 'normal');
       doc.text(`Page ${i} of ${totalPages}`, 196, 287, { align: 'right' });
     }
@@ -731,7 +731,7 @@ export default function MonthlyPerformanceReportPage() {
         {/* Document Header */}
         <div className="flex flex-col sm:flex-row items-center justify-between pb-6 border-b border-slate-200 dark:border-slate-800 gap-4">
           <div className="flex items-center gap-4">
-            <img src="/logo3.png" alt="KOD.BRAND" className="h-10 object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src="/logo3.png" alt="DIGI 360" className="h-14 sm:h-16 object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
             <div>
               <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
                 {isAcademicCounselor ? "ACADEMIC COUNSELOR MONTHLY PERFORMANCE REPORT" : "MONTHLY PERFORMANCE REPORT"}
@@ -1720,7 +1720,7 @@ export default function MonthlyPerformanceReportPage() {
         </div>
 
         <div className="mt-4 text-center text-xs text-slate-400 font-medium">
-          KOD.BRAND Digital Marketing Solutions Pvt Ltd • Official CRM Reporting Template
+          DIGI 360 Digital Marketing Solutions Pvt Ltd • Official CRM Reporting Template
         </div>
       </div>
     </div>

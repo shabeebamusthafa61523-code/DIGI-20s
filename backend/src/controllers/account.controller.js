@@ -1502,7 +1502,7 @@ export const sendSalaryPayslipEmail = async (req, res) => {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
         <div style="background-color: #0D1E4A; color: #ffffff; padding: 24px; text-align: center; border-bottom: 3px solid #65B32E;">
-          <h2 style="margin: 0; font-size: 22px; font-weight: 900; letter-spacing: 1px;">KOD.BRAND</h2>
+          <h2 style="margin: 0; font-size: 22px; font-weight: 900; letter-spacing: 1px;">DIGI 360</h2>
           <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.9; color: #65B32E; font-weight: bold; text-transform: uppercase;">Official Salary Payslip Statement — ${month}</p>
         </div>
 
@@ -1578,7 +1578,7 @@ export const sendSalaryPayslipEmail = async (req, res) => {
           </div>
 
           <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 24px; border-top: 1px solid #f1f5f9; padding-top: 16px;">
-            This is an official computer-generated salary advice statement issued by KODBRAND SOLUTIONS HR & Payroll Department.
+            This is an official computer-generated salary advice statement issued by DIGI 360 SOLUTIONS HR & Payroll Department.
           </p>
         </div>
       </div>
@@ -1588,7 +1588,7 @@ export const sendSalaryPayslipEmail = async (req, res) => {
       to: recipientEmail,
       subject: `Official Salary Payslip Statement — ${month} | ${empName}`,
       htmlContent,
-      senderName: headerSenderName || 'KODBRAND',
+      senderName: headerSenderName || 'DIGI 360',
       senderEmail: headerSenderEmail || null,
       apiKeyOverride: headerApiKey || null
     });
@@ -2836,12 +2836,12 @@ export const servePublicPdf = async (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📄 ${meta.docTitle} — Kod Brand</title>
-  <meta property="og:title" content="📄 ${meta.docTitle} — Kod Brand" />
+  <title>📄 ${meta.docTitle} — DIGI 360</title>
+  <meta property="og:title" content="📄 ${meta.docTitle} — DIGI 360" />
   <meta property="og:description" content="Official Billing Document. Tap to view or download PDF." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="${currentFullUrl}" />
-  <meta property="og:site_name" content="Kod Brand CRM" />
+  <meta property="og:site_name" content="DIGI 360 CRM" />
   <style>
     * { box-sizing: border-box; }
     body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #0f172a; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
