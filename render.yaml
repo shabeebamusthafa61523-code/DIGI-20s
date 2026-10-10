@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: digi360-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        value: mongodb+srv://shabeebamusthafa:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0
+      - key: JWT_SECRET
+        value: supersecretjwtkey1234567890digi360
