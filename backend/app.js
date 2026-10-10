@@ -48,6 +48,16 @@ if (cloudinaryEnvWarnings.length > 0) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Normalize URL prefixes to handle duplicate /api/v1/v1, /api/v1, and /api transparently
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api/v1/v1')) {
+    req.url = req.url.replace('/api/v1/v1', '/api/v1');
+  } else if (req.url.startsWith('/v1/v1')) {
+    req.url = req.url.replace('/v1/v1', '/v1');
+  }
+  next();
+});
+
 // 1. CORS Configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
@@ -88,61 +98,29 @@ app.get('/public/pdf/:token', servePublicPdf);
 
 // 4. Specific/Dedicated API Routers
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-app.use('/auth', authRoutes);
-app.use('/v1/auth', authRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/v1/auth', authRoutes);
-
-app.use('/attendance', attendanceRoutes);
-app.use('/v1/attendance', attendanceRoutes);
 app.use('/api/attendance', attendanceRoutes); 
 app.use('/api/v1/attendance', attendanceRoutes); 
-
-app.use('/user', userRoutes);
-app.use('/v1/user', userRoutes);
 app.use('/api/user', userRoutes); 
 app.use('/api/v1/user', userRoutes); 
-
-app.use('/tasks', taskRoutes);
-app.use('/v1/tasks', taskRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/v1/tasks', taskRoutes);
-
-app.use('/leaves', leaveRoutes);
-app.use('/v1/leaves', leaveRoutes);
+// app.use('/api/v1/leaves', leaveRoutes);
 app.use('/api/leaves', leaveRoutes);
-app.use('/api/v1/leaves', leaveRoutes);
-
-app.use('/ai', aiRoutes);
-app.use('/v1/ai', aiRoutes);
-app.use('/api/ai', aiRoutes);
 app.use('/api/v1/ai', aiRoutes);
-
-app.use('/md-dashboard', mdDashboardRoutes);
-app.use('/v1/md-dashboard', mdDashboardRoutes);
-app.use('/api/md-dashboard', mdDashboardRoutes);
 app.use('/api/v1/md-dashboard', mdDashboardRoutes);
-
-app.use('/accounts', accountRoutes);
-app.use('/v1/accounts', accountRoutes);
-app.use('/api/accounts', accountRoutes);
+app.use('/api/md-dashboard', mdDashboardRoutes);
 app.use('/api/v1/accounts', accountRoutes);
-
-app.use('/academy', academyRoutes);
-app.use('/v1/academy', academyRoutes);
-app.use('/api/academy', academyRoutes);
+app.use('/api/accounts', accountRoutes);
 app.use('/api/v1/academy', academyRoutes);
-
-app.use('/notifications', notificationRoutes);
-app.use('/v1/notifications', notificationRoutes);
-app.use('/api/notifications', notificationRoutes);
+app.use('/api/academy', academyRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
-
-app.use('/recruitment', recruitmentRoutes);
-app.use('/v1/recruitment', recruitmentRoutes);
-app.use('/api/recruitment', recruitmentRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/v1/notifications', notificationRoutes);
+app.use('/notifications', notificationRoutes);
 app.use('/api/v1/recruitment', recruitmentRoutes);
+app.use('/api/recruitment', recruitmentRoutes);
 
 // 4. Broad, Versioned, & Catch-all Fallbacks (Broadest matching paths go lower)
 app.use('/api/v1', studentRoutes);
