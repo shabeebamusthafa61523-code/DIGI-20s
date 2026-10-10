@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "build": "echo 'Backend ready'",
     "safe": "node start.js",
     "dev": "nodemon --exec \"node start.js\"",
     "seed": "node src/seeds/seedInitialData.js",
