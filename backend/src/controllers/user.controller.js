@@ -129,7 +129,22 @@ export const userController = {
         isNonOperational = String(deptName).toLowerCase().trim() === 'non-operational';
       }
 
-      const isSuperAdmin = req.user?.isSuperAdmin === true || req.user?.is_super_admin === true || loggedInUserRole === 'superadmin' || loggedInRoleId === '0';
+      let isSuperAdmin = req.user?.isSuperAdmin === true || req.user?.is_super_admin === true || loggedInUserRole === 'superadmin' || loggedInRoleId === '0';
+      if (!isSuperAdmin && loggedInUserId) {
+        try {
+          const loggedInUserObj = await User.findById(loggedInUserId).select('isSuperAdmin is_super_admin role role_id');
+          if (loggedInUserObj) {
+            const dbRole = String(loggedInUserObj.role || '').toLowerCase().trim();
+            const dbRoleId = String(loggedInUserObj.role_id || '').trim();
+            if (loggedInUserObj.isSuperAdmin === true || loggedInUserObj.is_super_admin === true || dbRole === 'superadmin' || dbRoleId === '0') {
+              isSuperAdmin = true;
+            }
+          }
+        } catch (e) {
+          console.warn('Superadmin check fallback warning in getUserList:', e.message);
+        }
+      }
+
       const isAdmin = loggedInUserRole === 'admin' || loggedInRoleId === '1';
       const isHr = loggedInUserRole === 'hr' || loggedInRoleId === '2';
 
@@ -137,11 +152,16 @@ export const userController = {
       
       let queryFilter = {
         isActive: true,
-        isSuperAdmin: { $ne: true },
-        is_super_admin: { $ne: true },
-        role: { $nin: ['student', 'Student', 'superadmin', 'Superadmin', 'Super Admin'] },
-        role_id: { $nin: ['10', 10, '0', 0] }
+        role: { $nin: ['student', 'Student'] },
+        role_id: { $nin: ['10', 10] }
       };
+
+      if (!isSuperAdmin) {
+        queryFilter.isSuperAdmin = { $ne: true };
+        queryFilter.is_super_admin = { $ne: true };
+        queryFilter.role = { $nin: ['student', 'Student', 'superadmin', 'Superadmin', 'Super Admin'] };
+        queryFilter.role_id = { $nin: ['10', 10, '0', 0] };
+      }
 
       if (!isPrivileged && loggedInUserId) {
         const Department = (await import('../modules/departments/department.model.js')).default;
@@ -240,14 +260,36 @@ export const userController = {
         status
       } = req.query;
 
-      const conditions = [
-        {
+      const loggedInUserId = req.user?.id || req.user?._id || req.user?.userId;
+      const loggedInUserRole = String(req.user?.role || '').toLowerCase().trim();
+      const loggedInRoleId = String(req.user?.role_id || req.user?.roleId || '').trim();
+      let isSuperAdmin = req.user?.isSuperAdmin === true || req.user?.is_super_admin === true || loggedInUserRole === 'superadmin' || loggedInRoleId === '0';
+
+      if (!isSuperAdmin && loggedInUserId) {
+        try {
+          const loggedInUserObj = await User.findById(loggedInUserId).select('isSuperAdmin is_super_admin role role_id');
+          if (loggedInUserObj) {
+            const dbRole = String(loggedInUserObj.role || '').toLowerCase().trim();
+            const dbRoleId = String(loggedInUserObj.role_id || '').trim();
+            if (loggedInUserObj.isSuperAdmin === true || loggedInUserObj.is_super_admin === true || dbRole === 'superadmin' || dbRoleId === '0') {
+              isSuperAdmin = true;
+            }
+          }
+        } catch (e) {
+          console.warn('Superadmin check fallback warning in getUsers:', e.message);
+        }
+      }
+
+      const conditions = [];
+
+      if (!isSuperAdmin) {
+        conditions.push({
           isSuperAdmin: { $ne: true },
           is_super_admin: { $ne: true },
           role: { $nin: ['superadmin', 'Superadmin', 'Super Admin'] },
           role_id: { $nin: ['0', 0] }
-        }
-      ];
+        });
+      }
 
       if (role) {
         const roleLower = String(role).toLowerCase().trim();
@@ -521,13 +563,23 @@ export const userController = {
 
       const selectedDesignation = await findDesignationById(designation);
 
+      const creatorRoleId = String(req.user?.role_id || req.user?.roleId || '').trim();
+      const creatorRole = String(req.user?.role || '').toLowerCase().trim();
+      const isSuperAdminCreator = req.user?.isSuperAdmin === true || req.user?.is_super_admin === true || creatorRole === 'superadmin' || creatorRoleId === '0';
+
+      const requestedRole = String(role || 'employee').toLowerCase().trim();
+      const finalRole = (requestedRole === 'superadmin' && !isSuperAdminCreator) ? 'employee' : (role || 'employee');
+      const isNewSuperAdmin = String(finalRole).toLowerCase() === 'superadmin';
+      const finalRoleId = isNewSuperAdmin ? '0' : (finalRole === 'hr' ? '1' : (finalRole === 'admin' ? '2' : '3'));
+
       const newUser =
         await User.create({
           name,
           email,
           phone,
-          role: role || 'employee',
-          role_id: role === 'admin' ? '1' : (role === 'manager' ? '2' : '3'),
+          role: finalRole,
+          role_id: finalRoleId,
+          isSuperAdmin: isNewSuperAdmin,
           department,
           departmentId,
           designation: selectedDesignation?.name || '',
@@ -709,6 +761,14 @@ export const userController = {
       }
 
       if (role) {
+        const updaterRoleId = String(req.user?.role_id || req.user?.roleId || '').trim();
+        const updaterRole = String(req.user?.role || '').toLowerCase().trim();
+        const isSuperAdminUpdater = req.user?.isSuperAdmin === true || req.user?.is_super_admin === true || updaterRole === 'superadmin' || updaterRoleId === '0';
+
+        if (role === 'superadmin' && !isSuperAdminUpdater) {
+          throw new AppError('Access denied. Only Super Admins can assign the Super Admin role.', 403);
+        }
+
         updateFields.role = role;
         updateFields.role_id = role === 'superadmin' ? '0' : (role === 'hr' ? '1' : (role === 'admin' ? '2' : '3'));
         updateFields.isSuperAdmin = role === 'superadmin';

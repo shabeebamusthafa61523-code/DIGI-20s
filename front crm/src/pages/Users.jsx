@@ -12,6 +12,7 @@ import { useToast } from '../components/ToastProvider';
 import ConfirmModal from '../components/ConfirmModal';
 import PerformanceTab from '../components/PerformanceTab';
 import PerformanceDashboard from './PerformanceDashboard';
+import { ALL_SIDEBAR_ITEMS } from '../constants/sidebarConfig';
 
 const RAW_API_BASE = import.meta.env.VITE_API_URL || '/api';
 const API_BASE = (RAW_API_BASE.endsWith('/') ? RAW_API_BASE.slice(0, -1) : RAW_API_BASE).replace(/\/+$/, '');
@@ -45,82 +46,6 @@ const ROLES = [
   { id: "1", name: "hr" },
   { id: "2", name: "admin" },
   { id: "3", name: "employee" }
-];
-
-const ALL_SIDEBAR_ITEMS = [
-  // --- OVERVIEW & GENERAL ---
-  { label: 'Admin Dashboard', path: '/dashboard', category: 'Overview' },
-  { label: 'Approvals', path: '/approvals', category: 'Overview' },
-  { label: 'Leave Requests', path: '/leaves', category: 'Overview' },
-  { label: 'Notifications', path: '/notifications', category: 'Overview' },
-
-  // --- DASHBOARDS ---
-  { label: 'MD Dashboard', path: '/md-dashboard', category: 'Dashboards' },
-  { label: 'HR Dashboard', path: '/hr-dashboard', category: 'Dashboards' },
-  { label: 'Lead Dashboard', path: '/lead-dashboard', category: 'Dashboards' },
-  { label: 'Marketing Dashboard', path: '/marketing-dashboard', category: 'Dashboards' },
-  { label: 'Dev Dashboard', path: '/developer-dashboard', category: 'Dashboards' },
-  { label: 'GD Dashboard', path: '/graphic-designer-dashboard', category: 'Dashboards' },
-  { label: 'Video Dashboard', path: '/videographer-dashboard', category: 'Dashboards' },
-  { label: 'Counselor Dashboard', path: '/counselor-dashboard', category: 'Dashboards' },
-
-  // --- PEOPLE & HR ---
-  { label: 'Users', path: '/users', category: 'People & HR' },
-  { label: 'Departments', path: '/departments', category: 'People & HR' },
-  { label: 'Recruitment', path: '/recruitment', category: 'People & HR' },
-  { label: 'Attendance', path: '/attendance', category: 'People & HR' },
-  { label: 'Sidebar Permissions', path: '/sidebar-permissions', category: 'People & HR' },
-
-  // --- SALES & CRM ---
-  { label: 'Clients', path: '/clients', category: 'Sales & CRM' },
-  { label: 'Client Leads', path: '/client-leads', category: 'Sales & CRM' },
-  { label: 'Student Leads', path: '/leads-telecaller', category: 'Sales & CRM' },
-
-  // --- MARKETING & WORK ---
-  { label: 'Projects', path: '/projects', category: 'Marketing & Work' },
-  { label: 'Task Assign', path: '/todo', category: 'Marketing & Work' },
-  { label: 'Content Calendar', path: '/calendar-work', category: 'Marketing & Work' },
-  { label: 'Daily Operations OS', path: '/daily-operations', category: 'Marketing & Work' },
-  { label: 'TL Daily Operations', path: '/tl-daily-operations', category: 'Marketing & Work' },
-
-  // --- FINANCE & PAYROLL ---
-  { label: 'Accounts', path: '/accounts', category: 'Finance & Payroll' },
-  { label: 'Sales', path: '/accounts/income', category: 'Finance & Payroll' },
-  { label: 'Income', path: '/accounts/sales', category: 'Finance & Payroll' },
-  { label: 'Purchase', path: '/accounts/purchase', category: 'Finance & Payroll' },
-  { label: 'Create Invoice', path: '/accounts/create-invoice', category: 'Finance & Payroll' },
-  { label: 'Expense Categories', path: '/accounts/categories', category: 'Finance & Payroll' },
-  { label: 'Expense', path: '/accounts/expenses', category: 'Finance & Payroll' },
-  { label: 'Salary Payment', path: '/accounts/salary', category: 'Finance & Payroll' },
-  { label: 'Cash & Bank', path: '/accounts/cash-book', category: 'Finance & Payroll' },
-  { label: 'Operation', path: '/accounts/operation', category: 'Finance & Payroll' },
-  { label: 'Financial Report', path: '/accounts/reports', category: 'Finance & Payroll' },
-  { label: 'Payslips', path: '/payslips', category: 'Finance & Payroll' },
-  { label: 'Personal Payslip', path: '/my-payslip', category: 'Finance & Payroll' },
-
-  // --- ACADEMY & LMS ---
-  { label: 'Course Management', path: '/academy/courses', category: 'Academy & LMS' },
-  { label: 'Batches', path: '/academy/batches', category: 'Academy & LMS' },
-  { label: 'Enrollment Tracking', path: '/academy/enrollments', category: 'Academy & LMS' },
-  { label: 'Student Attendance', path: '/student-attendance', category: 'Academy & LMS' },
-  { label: 'My LMS Learning', path: '/academy/learning', category: 'Academy & LMS' },
-
-  // --- REPORTS & ANALYTICS ---
-  { label: 'KPI Analytics', path: '/performance-dashboard', category: 'Reports' },
-  { label: 'AI Reports', path: '/ai-report', category: 'Reports' },
-  { label: 'Employee Reports', path: '/employee-reports', category: 'Reports' },
-  { label: 'Daily Report', path: '/basic-report', category: 'Reports' },
-  { label: 'Team Reports', path: '/team-reports', category: 'Reports' },
-  { label: 'HR Shift Report', path: '/hr-report', category: 'Reports' },
-  { label: 'Ops Shift Report', path: '/ops-report', category: 'Reports' },
-  { label: 'Accountant Shift Report', path: '/accountant-report', category: 'Reports' },
-  { label: 'Marketing Shift Report', path: '/marketing-report', category: 'Reports' },
-  { label: 'Developer Report', path: '/developer-report', category: 'Reports' },
-  { label: 'Graphic Designer Report', path: '/graphic-designer-report', category: 'Reports' },
-  { label: 'Videographer Report', path: '/videographer-report', category: 'Reports' },
-  { label: 'Academic Counselor Report', path: '/academic-counselor-report', category: 'Reports' },
-  { label: 'HOD R&D Report', path: '/hod-rd-report', category: 'Reports' },
-  { label: 'HOD Marketing Report', path: '/hod-marketing-report', category: 'Reports' }
 ];
 
 const STATUS_META = {
@@ -441,6 +366,26 @@ const Users = () => {
   const navigate = useNavigate();
   const [imgErrors, setImgErrors] = useState({});
 
+  const isLoggedInSuperAdmin = useMemo(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        const userObj = JSON.parse(savedUser);
+        const role = String(userObj.role_id || userObj.roleId || userObj.role || '').toLowerCase().trim();
+        return Boolean(
+          userObj.isSuperAdmin === true ||
+          userObj.is_super_admin === true ||
+          role === 'superadmin' ||
+          role === 'super_admin' ||
+          role === '0'
+        );
+      }
+    } catch (e) {
+      console.error("Error checking superadmin role in Users:", e);
+    }
+    return false;
+  }, []);
+
   const isHr = useMemo(() => {
     try {
       const savedUser = localStorage.getItem('user');
@@ -492,11 +437,11 @@ const Users = () => {
         incomingUsers = data;
       }
 
-      // Exclude superadmin users from staff directory listing
+      // Show superadmin users if current logged-in user is a superadmin, otherwise hide them
       const targetRolesOnly = incomingUsers.filter(user => {
         const userRoleId = String(user.roleId || user.role_id || user.role || '');
         const isSuper = user.isSuperAdmin === true || user.role === 'superadmin' || userRoleId === '0' || userRoleId.toLowerCase() === 'superadmin';
-        return !isSuper;
+        return isLoggedInSuperAdmin || !isSuper;
       });
 
       setUsers(targetRolesOnly);
@@ -506,7 +451,7 @@ const Users = () => {
     } finally {
       setLoading(false);
     }
-  }, [getAuthHeaders]);
+  }, [getAuthHeaders, isLoggedInSuperAdmin]);
 
   const fetchDesignations = useCallback(async () => {
     try {
@@ -1303,6 +1248,30 @@ const DesignationSelect = ({
 const CreateModal = ({ onClose, refresh, getAuthHeaders, designations, onDesignationCreated, onDesignationUpdated, onDesignationDeleted, departments, showToast }) => {
   useLockBodyScroll(true);
 
+  const isLoggedInSuperAdmin = useMemo(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        const userObj = JSON.parse(savedUser);
+        const role = String(userObj.role_id || userObj.roleId || userObj.role || '').toLowerCase().trim();
+        return Boolean(
+          userObj.isSuperAdmin === true ||
+          userObj.is_super_admin === true ||
+          role === 'superadmin' ||
+          role === 'super_admin' ||
+          role === '0'
+        );
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
+  }, []);
+
+  const availableRoles = useMemo(() => {
+    return ROLES.filter(r => isLoggedInSuperAdmin || r.name !== 'superadmin');
+  }, [isLoggedInSuperAdmin]);
+
   const [form, setForm] = useState({
     employeeId: `EMP-${Math.floor(1000 + Math.random() * 9000)}`,
     name: '',
@@ -1499,7 +1468,7 @@ const CreateModal = ({ onClose, refresh, getAuthHeaders, designations, onDesigna
             <div className="space-y-1">
               <label className="text-[10px] font-black uppercase text-indigo-500 dark:text-indigo-400 tracking-wider block ml-1">System Role</label>
               <select name="role" className="w-full text-xs py-2" value={form.role} onChange={handleInputChange}>
-                {ROLES.map(r => (
+                {availableRoles.map(r => (
                   <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>
                 ))}
               </select>
@@ -1568,6 +1537,30 @@ const CreateModal = ({ onClose, refresh, getAuthHeaders, designations, onDesigna
 // --- EDIT MODAL ---
 const EditModal = ({ user, onClose, refresh, getAuthHeaders, designations, onDesignationCreated, onDesignationUpdated, onDesignationDeleted, departments, showToast }) => {
   useLockBodyScroll(true);
+
+  const isLoggedInSuperAdmin = useMemo(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        const userObj = JSON.parse(savedUser);
+        const role = String(userObj.role_id || userObj.roleId || userObj.role || '').toLowerCase().trim();
+        return Boolean(
+          userObj.isSuperAdmin === true ||
+          userObj.is_super_admin === true ||
+          role === 'superadmin' ||
+          role === 'super_admin' ||
+          role === '0'
+        );
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
+  }, []);
+
+  const availableRoles = useMemo(() => {
+    return ROLES.filter(r => isLoggedInSuperAdmin || r.name !== 'superadmin');
+  }, [isLoggedInSuperAdmin]);
 
   const [form, setForm] = useState({
     employeeId: user.employeeId || '',
@@ -1766,7 +1759,7 @@ const EditModal = ({ user, onClose, refresh, getAuthHeaders, designations, onDes
             <div className="space-y-1.5">
               <label className="text-[10px] font-black uppercase text-indigo-500 dark:text-indigo-400 tracking-wider block ml-1">System Role</label>
               <select name="role" className="w-full" value={form.role} onChange={handleInputChange}>
-                {ROLES.map(r => (
+                {availableRoles.map(r => (
                   <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>
                 ))}
               </select>

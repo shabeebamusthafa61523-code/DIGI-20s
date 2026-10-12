@@ -114,8 +114,8 @@ const menuItems = [
   // --- MARKETING & WORK ---
   { icon: Calendar, label: 'Content Calendar', path: '/calendar-work', category: 'Marketing & Work' },
   { icon: FolderKanban, label: 'Projects', path: '/projects', category: 'Marketing & Work', allowedRoles: ['1', '2', '10', 'hr', 'admin', 'superadmin', 'manager', 'team_lead', 'teamlead'] },
-  { icon: ClipboardCheck, label: 'Client Review', path: '/client-review', category: 'Marketing & Work' },
-  { icon: Share2, label: 'Social Media', path: '/social-media', category: 'Marketing & Work' },
+  // { icon: ClipboardCheck, label: 'Client Review', path: '/client-review', category: 'Marketing & Work' },
+  // { icon: Share2, label: 'Social Media', path: '/social-media', category: 'Marketing & Work' },
 
   // --- FINANCE & PAYROLL ---
   { icon: Wallet, label: 'Accounts', path: '/accounts', category: 'Finance & Payroll', children: [
