@@ -26,10 +26,12 @@ export const ALL_SIDEBAR_ITEMS = [
   { label: 'Marketing Dashboard', path: '/marketing-dashboard', category: 'Dashboards', desc: 'Marketing campaigns & lead generation metrics' },
 
   // --- PEOPLE & HR ---
+  { label: 'Staff Attendance', path: '/staff-attendance', category: 'People & HR', desc: 'Daily staff attendance roster & clock-in logs' },
   { label: 'Recruitment', path: '/recruitment', category: 'People & HR', desc: 'Candidate pipeline, interviews & offer letters' },
   { label: 'Users', path: '/users', category: 'People & HR', desc: 'Employee directory & account management' },
   { label: 'Departments', path: '/departments', category: 'People & HR', desc: 'Department hierarchy & manager assignments' },
   { label: 'Sidebar Permissions', path: '/sidebar-permissions', category: 'People & HR', desc: 'Custom user menu permission configuration' },
+  { label: 'Employee Training', path: '/hr/training', category: 'People & HR', desc: 'Internal employee training modules & courses' },
 
   // --- SALES & CRM ---
   { label: 'Client Leads', path: '/client-leads', category: 'Sales & CRM', desc: 'Client sales lead pipeline & inquiries' },

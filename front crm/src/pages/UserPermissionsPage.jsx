@@ -21,7 +21,6 @@ const getApiEndpoint = (path) => {
   }
   return `${API_BASE}/api/v1${cleanPath}`;
 };
-
 const UserPermissionsPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
