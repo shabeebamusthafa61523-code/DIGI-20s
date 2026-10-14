@@ -26,6 +26,7 @@ import EditClientModal from '../components/clients/EditClientModal';
 import ConfirmModal from '../components/ConfirmModal';
 import ClientProposalModal from '../components/clients/ClientProposalModal';
 import ProposalPdfTemplate from '../components/clients/ProposalPdfTemplate';
+import ProposalPreviewDoc from '../components/clients/ProposalPreviewDoc';
 import { Download, Sparkles, Share2, Printer, Loader2 } from 'lucide-react';
 
 const ClientDetailsPage = () => {
@@ -639,7 +640,7 @@ const ClientDetailsPage = () => {
     setActivePreviewProposal(prop);
     try {
       await new Promise(r => setTimeout(r, 250));
-      const element = document.getElementById('proposal-pdf-container');
+      const element = document.getElementById('proposal-document-export-root') || document.getElementById('proposal-pdf-container');
       if (!element) throw new Error("Proposal export template could not be loaded");
 
       const html2pdfModule = await import('html2pdf.js');
@@ -648,7 +649,14 @@ const ClientDetailsPage = () => {
       const clientClean = String(prop.clientName || client?.companyName || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
       const typeClean = String(prop.proposalType || 'Proposal').replace(/[^a-zA-Z0-9_-]/g, '_');
 
-      const opt = {
+      const isA4Doc = !!document.getElementById('proposal-document-export-root');
+      const opt = isA4Doc ? {
+        margin: [6, 6, 6, 6],
+        filename: `${clientClean}_${typeClean}_Proposal.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      } : {
         margin: 0,
         filename: `${clientClean}_${typeClean}_Proposal.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
@@ -2173,9 +2181,9 @@ const ClientDetailsPage = () => {
             </div>
           </div>
 
-          {/* Document Content View */}
-          <div className="my-6 overflow-x-auto max-w-full rounded-2xl shadow-2xl border border-slate-800">
-            <ProposalPdfTemplate proposal={activePreviewProposal} client={client} />
+          {/* Document Content View - Single Page A4 Executive Print Format */}
+          <div className="my-6 overflow-x-auto max-w-full rounded-2xl shadow-2xl p-4 bg-slate-900/60 border border-slate-800 flex justify-center">
+            <ProposalPreviewDoc proposal={activePreviewProposal} client={client} isEditable={false} />
           </div>
         </div>,
         document.body
@@ -2184,7 +2192,7 @@ const ClientDetailsPage = () => {
       {/* Hidden PDF Generation Container for Direct Export */}
       <div style={{ position: 'absolute', left: '-99999px', top: 0 }}>
         {activePreviewProposal && (
-          <ProposalPdfTemplate proposal={activePreviewProposal} client={client} />
+          <ProposalPreviewDoc proposal={activePreviewProposal} client={client} isEditable={false} />
         )}
       </div>
 
