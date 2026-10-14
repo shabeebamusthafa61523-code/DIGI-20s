@@ -644,6 +644,9 @@ const ClientDetailsPage = () => {
       const element = document.getElementById('proposal-document-export-root') || document.getElementById('proposal-pdf-container');
       if (!element) throw new Error("Proposal export template could not be loaded");
 
+      const clientClean = String(prop?.clientName || client?.companyName || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const typeClean = String(prop?.proposalType || 'Proposal').replace(/[^a-zA-Z0-9_-]/g, '_');
+
       const isA4Doc = !!document.getElementById('proposal-document-export-root');
       if (isA4Doc) {
         await exportProposalToPdf(element, `${clientClean}_${typeClean}_Proposal.pdf`);
