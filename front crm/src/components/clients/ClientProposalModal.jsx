@@ -5,6 +5,7 @@ import {
   Download, Printer, Loader2
 } from 'lucide-react';
 import ProposalPreviewDoc from './ProposalPreviewDoc';
+import { exportProposalToPdf } from '../../utils/proposalPdfUtils';
 
 export default function ClientProposalModal({ 
   isOpen, 
@@ -270,21 +271,11 @@ export default function ClientProposalModal({
       const element = document.getElementById('proposal-document-export-root');
       if (!element) throw new Error("Proposal preview document not found");
 
-      const html2pdfModule = await import('html2pdf.js');
-      const html2pdfInstance = html2pdfModule.default || html2pdfModule;
-
       const clientClean = String(formData.clientName || client?.companyName || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
       const typeClean = String(formData.proposalType || 'Proposal').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const filename = `${clientClean}_${typeClean}_Proposal.pdf`;
 
-      const opt = {
-        margin: [6, 6, 6, 6],
-        filename: `${clientClean}_${typeClean}_Proposal.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      await html2pdfInstance().set(opt).from(element).save();
+      await exportProposalToPdf(element, filename);
     } catch (err) {
       console.error("PDF generation failed:", err);
       alert("Failed to export PDF: " + err.message);

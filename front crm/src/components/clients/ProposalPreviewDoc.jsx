@@ -109,21 +109,47 @@ const ProposalPreviewDoc = React.forwardRef(({
         backgroundColor: '#ffffff',
         color: '#0f172a',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        width: '800px',
-        maxWidth: '800px',
+        width: '794px',
+        maxWidth: '794px',
         margin: '0 auto',
-        padding: '22px 26px',
+        padding: '18px 22px',
         boxSizing: 'border-box',
         position: 'relative',
-        borderRadius: '16px',
+        borderRadius: '14px',
         border: '1px solid #e2e8f0',
-        boxShadow: '0 12px 35px rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        gap: '14px'
+        gap: '10px'
       }}
     >
+      <style>{`
+        @media print {
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+          body * {
+            visibility: hidden !important;
+          }
+          #proposal-document-export-root, #proposal-document-export-root * {
+            visibility: visible !important;
+          }
+          #proposal-document-export-root {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 12mm 15mm !important;
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+          }
+        }
+      `}</style>
       {/* ========================================================= */}
       {/* 1. CO-BRANDED HEADER & METADATA BAR                       */}
       {/* ========================================================= */}
