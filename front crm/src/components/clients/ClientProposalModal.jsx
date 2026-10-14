@@ -433,7 +433,7 @@ export default function ClientProposalModal({
               </div>
 
               {/* Centered Document Preview Canvas */}
-              <div className="p-4 sm:p-6 rounded-2xl bg-slate-100/80 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 flex justify-center overflow-x-auto shadow-inner">
+              <div className="p-4 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200/80 flex justify-center overflow-x-auto shadow-sm">
                 <ProposalPreviewDoc
                   proposal={formData}
                   client={client}

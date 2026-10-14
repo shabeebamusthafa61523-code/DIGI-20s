@@ -2132,55 +2132,68 @@ const ClientDetailsPage = () => {
         loading={proposalSubmitting}
       />
 
-      {/* Proposal Document Preview Modal */}
+      {/* Proposal Document Preview Modal - Clean White Background */}
       {isPreviewModalOpen && activePreviewProposal && createPortal(
-        <div className="fixed inset-0 z-[99999] bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-between p-4 overflow-y-auto">
-          {/* Top Preview Bar */}
-          <div className="max-w-6xl w-full flex items-center justify-between pb-4 border-b border-slate-800 text-white shrink-0">
-            <div className="flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-violet-600/20 text-violet-400">
-                <FileText size={18} />
-              </span>
-              <div>
-                <h3 className="text-sm font-black uppercase text-white">
-                  {activePreviewProposal.title || 'Proposal Document Preview'}
-                </h3>
-                <span className="text-[11px] text-slate-400">
-                  {activePreviewProposal.clientName || client?.companyName} • {activePreviewProposal.proposalNumber}
+        <div className="fixed inset-0 z-[99999] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-5xl w-full flex flex-col max-h-[94vh] overflow-hidden my-auto">
+            {/* Top Preview Bar */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="p-2.5 rounded-xl bg-violet-50 text-violet-600">
+                  <FileText size={18} />
                 </span>
+                <div>
+                  <h3 className="text-sm font-black uppercase text-slate-900">
+                    {activePreviewProposal.title || 'Proposal Document Preview'}
+                  </h3>
+                  <span className="text-xs text-slate-500 font-medium">
+                    {activePreviewProposal.clientName || client?.companyName} • {activePreviewProposal.proposalNumber}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
+                  title="Print A4 Proposal"
+                >
+                  <Printer size={14} className="text-slate-500" />
+                  <span>Print</span>
+                </button>
+
+                <button
+                  disabled={isPdfGenerating}
+                  onClick={() => handleDownloadPdf(activePreviewProposal)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold shadow-lg shadow-violet-600/25 transition cursor-pointer disabled:opacity-50"
+                >
+                  {isPdfGenerating ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      <span>Exporting PDF...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download size={14} />
+                      <span>Download Formatted PDF</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setIsPreviewModalOpen(false)}
+                  className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition cursor-pointer ml-1"
+                >
+                  <X size={20} />
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <button
-                disabled={isPdfGenerating}
-                onClick={() => handleDownloadPdf(activePreviewProposal)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold shadow-lg shadow-violet-600/30 transition cursor-pointer disabled:opacity-50"
-              >
-                {isPdfGenerating ? (
-                  <>
-                    <Loader2 size={14} className="animate-spin" />
-                    <span>Exporting PDF...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download size={14} />
-                    <span>Download Formatted PDF</span>
-                  </>
-                )}
-              </button>
-              <button
-                onClick={() => setIsPreviewModalOpen(false)}
-                className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition cursor-pointer"
-              >
-                <X size={20} />
-              </button>
+            {/* Document Content View - White Studio Canvas */}
+            <div className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-8 bg-slate-50 flex justify-center items-start">
+              <ProposalPreviewDoc proposal={activePreviewProposal} client={client} isEditable={false} />
             </div>
-          </div>
-
-          {/* Document Content View - Single Page A4 Executive Print Format */}
-          <div className="my-6 overflow-x-auto max-w-full rounded-2xl shadow-2xl p-4 bg-slate-900/60 border border-slate-800 flex justify-center">
-            <ProposalPreviewDoc proposal={activePreviewProposal} client={client} isEditable={false} />
           </div>
         </div>,
         document.body
