@@ -15,6 +15,7 @@ export default function ClientProposalModal({
   loading = false 
 }) {
   const [activeSection, setActiveSection] = useState('overview');
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   const defaultObjectives = [
     { title: '01. BRAND POSITIONING', description: `Position ${client?.companyName || 'the brand'} as a reliable and trusted automotive spare parts source in the region.` },
@@ -262,8 +263,6 @@ export default function ClientProposalModal({
   const handleRemoveTerm = (index) => {
     setFormData(prev => ({ ...prev, termsAndConditions: prev.termsAndConditions.filter((_, i) => i !== index) }));
   };
-
-  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   const handleDownloadPdf = async () => {
     setIsExportingPdf(true);
