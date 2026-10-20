@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import User from './src/models/user.model.js';
@@ -7,7 +7,7 @@ dotenv.config();
 
 async function run() {
   try {
-    const mongoUri = process.env.DATABASE_URL || process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0';
+    const mongoUri = process.env.DATABASE_URL || process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0';
     console.log('Connecting to MongoDB at:', mongoUri);
     await mongoose.connect(mongoUri);
     console.log('Connected!');

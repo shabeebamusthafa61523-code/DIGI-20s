@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import fs from 'fs';
 import User from './src/models/user.model.js';
 import { userController } from './src/controllers/user.controller.js';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0';
 
 async function testApiLogic() {
   await mongoose.connect(MONGO_URI);

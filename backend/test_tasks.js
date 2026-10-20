@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import User from './src/models/user.model.js';
 import Task from './src/models/task.model.js';
 import Department from './src/modules/departments/department.model.js';
 
 const run = async () => {
   try {
-    await mongoose.connect('mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0');
+    await mongoose.connect('mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0');
     
     // Pick Liyana
     const user = await User.findOne({ name: /Liyana/i });

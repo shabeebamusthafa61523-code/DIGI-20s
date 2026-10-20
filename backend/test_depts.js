@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import Department from './src/modules/departments/department.model.js';
 import User from './src/models/user.model.js';
 import Task from './src/models/task.model.js';
 
 const run = async () => {
   try {
-    await mongoose.connect('mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0');
+    await mongoose.connect('mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0');
     
     const depts = await Department.find({});
     console.log(`Found ${depts.length} departments.`);

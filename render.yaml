@@ -9,6 +9,10 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
-        value: mongodb+srv://shabeebamusthafa:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0
+        value: mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0
+      - key: MONGO_URI
+        value: mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0
+      - key: DATABASE_URL
+        value: mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0
       - key: JWT_SECRET
         value: supersecretjwtkey1234567890digi360

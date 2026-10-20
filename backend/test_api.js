@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import User from './src/models/user.model.js';
 import jwt from 'jsonwebtoken';
 
 const run = async () => {
   try {
-    await mongoose.connect('mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm?appName=Cluster0');
+    await mongoose.connect('mongodb+srv://shabeeba:9995982324@cluster0.i23tzbf.mongodb.net/digicrm20s?appName=Cluster0');
     
     // Find Athira and Liyana
     const users = await User.find({ name: /Liyana|Athira/i });
