@@ -68,6 +68,8 @@ import TeamLeadDailyOperationsPage from './pages/TeamLeadDailyOperationsPage';
 import DailyShiftReportPage from './pages/DailyShiftReportPage';
 import WeeklyPerformanceReportPage from './pages/WeeklyPerformanceReportPage';
 import MonthlyPerformanceReportPage from './pages/MonthlyPerformanceReportPage';
+import EmployeeTrainingPage from './pages/EmployeeTrainingPage';
+import TrainingLmsPage from './pages/TrainingLmsPage';
 
 // Client & Project Management Module Pages
 import ClientsPage from './pages/ClientsPage';
@@ -291,6 +293,11 @@ function App() {
         {/* Daily Operations OS Routes */}
         <Route path="/daily-operations" element={<ProtectedRoute><MainLayout><DailyOperationsPage /></MainLayout></ProtectedRoute>} />
         <Route path="/tl-daily-operations" element={<ProtectedRoute><MainLayout><TeamLeadDailyOperationsPage /></MainLayout></ProtectedRoute>} />
+
+        {/* Employee Training & Training LMS Routes */}
+        <Route path="/hr/training" element={<ProtectedRoute><MainLayout><EmployeeTrainingPage /></MainLayout></ProtectedRoute>} />
+        <Route path="/employee-training" element={<ProtectedRoute><MainLayout><EmployeeTrainingPage /></MainLayout></ProtectedRoute>} />
+        <Route path="/training-lms" element={<ProtectedRoute><MainLayout><TrainingLmsPage /></MainLayout></ProtectedRoute>} />
 
         {/* Default Landing Route */}
         <Route path="/" element={<LandingRoute />} />
