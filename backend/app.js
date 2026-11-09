@@ -1,4 +1,4 @@
-﻿import 'dotenv/config';
+import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -29,6 +29,7 @@ import academyRoutes from './src/routes/academy.routes.js';
 import notificationRoutes from './src/routes/notification.routes.js';
 import leaveRoutes from './src/routes/leave.routes.js';
 import recruitmentRoutes from './src/routes/recruitment.routes.js';
+import employeeTrainingRoutes from './src/routes/employeeTraining.routes.js';
 import { servePublicPdf } from './src/controllers/account.controller.js';
 import Designation from './src/models/designation.model.js';
 import Department from './src/modules/departments/department.model.js';
@@ -121,6 +122,8 @@ app.use('/v1/notifications', notificationRoutes);
 app.use('/notifications', notificationRoutes);
 app.use('/api/v1/recruitment', recruitmentRoutes);
 app.use('/api/recruitment', recruitmentRoutes);
+app.use('/api/v1/employee-training', employeeTrainingRoutes);
+app.use('/api/employee-training', employeeTrainingRoutes);
 
 // 4. Broad, Versioned, & Catch-all Fallbacks (Broadest matching paths go lower)
 app.use('/api/v1', studentRoutes);
