@@ -163,7 +163,9 @@ export const userController = {
         queryFilter.role_id = { $nin: ['10', 10, '0', 0] };
       }
 
-      if (!isPrivileged && loggedInUserId) {
+      const isTaskAssignment = req.query.for === 'tasks' || req.query.scope === 'all' || req.query.all === 'true' || req.query.assign === 'true';
+
+      if (!isPrivileged && loggedInUserId && !isTaskAssignment) {
         const Department = (await import('../modules/departments/department.model.js')).default;
         const UserDepartment = (await import('../models/userDepartment.model.js')).default;
         
@@ -228,6 +230,12 @@ export const userController = {
       .populate('departmentId')
       const formattedUsers = users.map(u => {
         const uObj = u.toObject ? u.toObject() : { ...u };
+        if (!uObj.department && uObj.departmentId?.name) {
+          uObj.department = uObj.departmentId.name;
+        }
+        if (!uObj.designation && uObj.designationId?.name) {
+          uObj.designation = uObj.designationId.name;
+        }
         const imgUrl = uObj.avatar || uObj.profile_image || uObj.profileImage || null;
         uObj.avatar = imgUrl;
         uObj.profile_image = imgUrl;

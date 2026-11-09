@@ -300,6 +300,60 @@ const Todo = () => {
     return '';
   };
   const [currentUserId] = useState(getCurrentUserId);
+  const [taskViewFilter, setTaskViewFilter] = useState('all'); // 'all' | 'assigned_to_me' | 'assigned_by_me'
+
+  const taskCounts = useMemo(() => {
+    const normCurrentId = String(currentUserId || '').replace(/"/g, '').trim();
+    let assignedToMe = 0;
+    let assignedByMe = 0;
+
+    tasks.forEach(t => {
+      const assignees = Array.isArray(t.assigned_to) ? t.assigned_to : (t.assigned_to ? [t.assigned_to] : []);
+      const isAssigned = assignees.some(u => {
+        const id = typeof u === 'object' && u !== null ? (u._id || u.id) : u;
+        return String(id || '').replace(/"/g, '').trim() === normCurrentId;
+      });
+      if (isAssigned) assignedToMe++;
+
+      const creator = t.created_by || t.user_id;
+      const creatorId = typeof creator === 'object' && creator !== null ? (creator._id || creator.id) : creator;
+      if (String(creatorId || '').replace(/"/g, '').trim() === normCurrentId) {
+        assignedByMe++;
+      }
+    });
+
+    return {
+      all: tasks.length,
+      assigned_to_me: assignedToMe,
+      assigned_by_me: assignedByMe
+    };
+  }, [tasks, currentUserId]);
+
+  const displayedTasks = useMemo(() => {
+    if (!currentUserId || taskViewFilter === 'all') return tasks;
+
+    const normCurrentId = String(currentUserId).replace(/"/g, '').trim();
+
+    if (taskViewFilter === 'assigned_to_me') {
+      return tasks.filter(t => {
+        const assignees = Array.isArray(t.assigned_to) ? t.assigned_to : (t.assigned_to ? [t.assigned_to] : []);
+        return assignees.some(u => {
+          const id = typeof u === 'object' && u !== null ? (u._id || u.id) : u;
+          return String(id || '').replace(/"/g, '').trim() === normCurrentId;
+        });
+      });
+    }
+
+    if (taskViewFilter === 'assigned_by_me') {
+      return tasks.filter(t => {
+        const creator = t.created_by || t.user_id;
+        const creatorId = typeof creator === 'object' && creator !== null ? (creator._id || creator.id) : creator;
+        return String(creatorId || '').replace(/"/g, '').trim() === normCurrentId;
+      });
+    }
+
+    return tasks;
+  }, [tasks, taskViewFilter, currentUserId]);
 
   const getAuthHeaders = useCallback(() => {
     const rawToken = localStorage.getItem('token');
@@ -315,7 +369,7 @@ const fetchData = useCallback(async () => {
         headers: getAuthHeaders()
       }),
 
-      fetch(`${API_BASE}/v1/users/list`, {
+      fetch(`${API_BASE}/v1/users/list?for=tasks`, {
         headers: getAuthHeaders()
       }),
 
@@ -435,20 +489,62 @@ const fetchData = useCallback(async () => {
       <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
       
       <div className="max-w-[1700px] mx-auto py-2">
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-6 border-b border-slate-200 dark:border-slate-800 pb-2">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 dark:border-slate-800 pb-3">
           <div>
-            <div className="flex items-center gap-3 ">
-              {/* <div className="h-2 w-2 bg-indigo-500 rounded-full animate-ping" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-500/70 dark:text-indigo-400/80">System Live</span> */}
-            </div>
-            <h1 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100 italic tracking-tighter leading-none">
-              TASKS <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500"></span>
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100 italic tracking-tighter leading-none mb-3">
+              TASKS
             </h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button 
+                type="button"
+                onClick={() => setTaskViewFilter('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 border ${
+                  taskViewFilter === 'all'
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span>All Tasks</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${taskViewFilter === 'all' ? 'bg-indigo-700 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>
+                  {taskCounts.all}
+                </span>
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => setTaskViewFilter('assigned_to_me')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 border ${
+                  taskViewFilter === 'assigned_to_me'
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span>Assigned to Me</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${taskViewFilter === 'assigned_to_me' ? 'bg-indigo-700 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>
+                  {taskCounts.assigned_to_me}
+                </span>
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => setTaskViewFilter('assigned_by_me')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 border ${
+                  taskViewFilter === 'assigned_by_me'
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span>Assigned by Me</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${taskViewFilter === 'assigned_by_me' ? 'bg-indigo-700 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>
+                  {taskCounts.assigned_by_me}
+                </span>
+              </button>
+            </div>
           </div>
           
           <button 
             onClick={() => setIsModalOpen(true)} 
-            className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 shadow-sm rounded-full font-black text-[11px] uppercase tracking-widest transition-all hover:scale-105 active:scale-95 overflow-hidden cursor-pointer"
+            className="group relative flex items-center justify-center gap-3 px-8 py-3.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 shadow-sm rounded-full font-black text-[11px] uppercase tracking-widest transition-all hover:scale-105 active:scale-95 overflow-hidden cursor-pointer shrink-0"
           >
             <div className="absolute inset-0 bg-indigo-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <Plus size={18} className="relative z-10 group-hover:text-white" /> 
@@ -475,11 +571,11 @@ const fetchData = useCallback(async () => {
                         </div>
                         <h2 className="font-bold text-slate-800 dark:text-slate-200 uppercase text-[11px] tracking-[0.2em]">{COLUMN_META[statusKey].label}</h2>
                       </div>
-                      <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200/20 dark:border-slate-800/30">{tasks.filter(t => t.status === statusKey).length}</span>
+                      <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200/20 dark:border-slate-800/30">{displayedTasks.filter(t => t.status === statusKey).length}</span>
                     </div>
 
                     <div className="p-4 space-y-4">
-                      {tasks.filter(t => t.status === statusKey).map((task, index) => {
+                      {displayedTasks.filter(t => t.status === statusKey).map((task, index) => {
                         const checkIsUrgent = (dateString) => {
                           if (!dateString) return false;
                           const today = new Date();
@@ -548,20 +644,23 @@ const fetchData = useCallback(async () => {
                                 </div>
                               )}
 
-                              <div className="flex items-center justify-between pt-3 border-t border-slate-100/60 dark:border-slate-850/50">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-850 border border-slate-200/50 dark:border-slate-750/50 flex items-center justify-center text-slate-500 dark:text-slate-400">
-                                    <User size={12} />
+                              <div className="flex flex-col gap-1.5 pt-3 border-t border-slate-100/60 dark:border-slate-850/50">
+                                <div className="flex items-center justify-between text-[10px]">
+                                  <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 truncate max-w-[150px]">
+                                    <User size={12} className="shrink-0 text-indigo-500" />
+                                    <span className="font-semibold truncate">
+                                      To: {getUserDisplayName(task.assigned_to, users)}
+                                    </span>
                                   </div>
-                                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-wide truncate max-w-[120px]">
-                                    {getUserDisplayName(task.assigned_to, users)}
-                                  </span>
+                                  {task.image && (
+                                    <div className="p-1 rounded-md bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/10 shrink-0">
+                                      <ImageIcon size={11} />
+                                    </div>
+                                  )}
                                 </div>
-                                {task.image && (
-                                  <div className="p-1.5 rounded-lg bg-white-500/10 text-white-500 dark:text-indigo-400 border border-indigo-500/10">
-                                    <ImageIcon size={12} />
-                                  </div>
-                                )}
+                                <div className="text-[9px] text-slate-400 dark:text-slate-500 font-medium truncate">
+                                  By: {getOwnerDisplayName(task, users)}
+                                </div>
                               </div>
                             </div>
                           )}
@@ -610,6 +709,29 @@ const fetchData = useCallback(async () => {
 
 // --- CREATE MODAL COMPONENT ---
 const CreateModal = ({ onClose, users, refresh, getAuthHeaders, designations, currentUserId }) => {
+  const [staffSearch, setStaffSearch] = useState('');
+
+  const filteredUsers = useMemo(() => {
+    if (!staffSearch.trim()) return users;
+    const term = staffSearch.toLowerCase().trim();
+    return users.filter(u => {
+      const name = String(u.name || u.fullName || u.username || '').toLowerCase();
+      const email = String(u.email || '').toLowerCase();
+      const dept = String(u.department || (typeof u.departmentId === 'object' && u.departmentId?.name) || '').toLowerCase();
+      const desig = String(getUserDesignationName(u, designations, users)).toLowerCase();
+      return name.includes(term) || email.includes(term) || dept.includes(term) || desig.includes(term);
+    });
+  }, [users, staffSearch, designations]);
+
+  const departmentGroups = useMemo(() => {
+    const groups = {};
+    filteredUsers.forEach(u => {
+      const dept = u.department || (typeof u.departmentId === 'object' && u.departmentId?.name) || 'General Staff';
+      if (!groups[dept]) groups[dept] = [];
+      groups[dept].push(u);
+    });
+    return groups;
+  }, [filteredUsers]);
   const { showToast } = useToast();
 
   const [form, setForm] = useState({ title: '', description: '', assigned_to: '', designation_id: '', dueDate: '', client: '', project: '', priority: 'medium' });
@@ -1056,49 +1178,62 @@ const CreateModal = ({ onClose, users, refresh, getAuthHeaders, designations, cu
             )}
 
             {/* Multi-Select Users Dropdown */}
-            <select
-              className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2.5 rounded-xl text-slate-900 dark:text-slate-100 text-xs font-bold outline-none cursor-pointer"
-              value=""
-              onChange={e => {
-                const selectedId = e.target.value;
-                if (!selectedId) return;
-                const current = Array.isArray(form.assigned_to) ? form.assigned_to : (form.assigned_to ? [form.assigned_to] : []);
-                let next;
-                if (current.map(String).includes(String(selectedId))) {
-                  next = current.filter(id => String(id) !== String(selectedId));
-                } else {
-                  next = [...current, selectedId];
-                }
+            <div className="space-y-1.5">
+              <input
+                type="text"
+                placeholder="Search staff by name, role, or department..."
+                value={staffSearch}
+                onChange={e => setStaffSearch(e.target.value)}
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-xl text-slate-800 dark:text-slate-200 text-xs font-medium placeholder-slate-400 outline-none focus:border-indigo-500/50"
+              />
+              <select
+                className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2.5 rounded-xl text-slate-900 dark:text-slate-100 text-xs font-bold outline-none cursor-pointer"
+                value=""
+                onChange={e => {
+                  const selectedId = e.target.value;
+                  if (!selectedId) return;
+                  const current = Array.isArray(form.assigned_to) ? form.assigned_to : (form.assigned_to ? [form.assigned_to] : []);
+                  let next;
+                  if (current.map(String).includes(String(selectedId))) {
+                    next = current.filter(id => String(id) !== String(selectedId));
+                  } else {
+                    next = [...current, selectedId];
+                  }
 
-                let desigId = form.designation_id;
-                if (next.length > 0) {
-                  const firstUser = users.find(u => String(u.id || u._id) === String(next[0]));
-                  if (firstUser) {
-                    if (firstUser.designationId) {
-                      desigId = (firstUser.designationId && typeof firstUser.designationId === 'object')
-                        ? (firstUser.designationId._id || firstUser.designationId.id || '')
-                        : String(firstUser.designationId);
-                    } else if (firstUser.designation) {
-                      desigId = String(firstUser.designation);
+                  let desigId = form.designation_id;
+                  if (next.length > 0) {
+                    const firstUser = users.find(u => String(u.id || u._id) === String(next[0]));
+                    if (firstUser) {
+                      if (firstUser.designationId) {
+                        desigId = (firstUser.designationId && typeof firstUser.designationId === 'object')
+                          ? (firstUser.designationId._id || firstUser.designationId.id || '')
+                          : String(firstUser.designationId);
+                      } else if (firstUser.designation) {
+                        desigId = String(firstUser.designation);
+                      }
                     }
                   }
-                }
-                setForm({ ...form, assigned_to: next, designation_id: desigId });
-              }}
-            >
-              <option value="">+ Click to add / remove assigned staff member...</option>
-              {users.map(u => {
-                const uId = u.id || u._id;
-                const isYou = currentUserId && String(uId) === String(currentUserId);
-                const isSel = (Array.isArray(form.assigned_to) ? form.assigned_to : [form.assigned_to]).some(id => String(id) === String(uId));
-                const desigName = getUserDesignationName(u, designations, users);
-                return (
-                  <option key={uId} value={uId} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium">
-                    {isSel ? `✓ ${u.name}` : u.name}{isYou ? ' (You)' : ''}{desigName ? ` — (${desigName})` : ''}{isSel ? ' [Selected]' : ''}
-                  </option>
-                );
-              })}
-            </select>
+                  setForm({ ...form, assigned_to: next, designation_id: desigId });
+                }}
+              >
+                <option value="">+ Click to add / remove assigned staff member...</option>
+                {Object.entries(departmentGroups).map(([deptName, deptUsers]) => (
+                  <optgroup key={deptName} label={deptName.toUpperCase()} className="bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-400">
+                    {deptUsers.map(u => {
+                      const uId = u.id || u._id;
+                      const isYou = currentUserId && String(uId) === String(currentUserId);
+                      const isSel = (Array.isArray(form.assigned_to) ? form.assigned_to : [form.assigned_to]).some(id => String(id) === String(uId));
+                      const desigName = getUserDesignationName(u, designations, users);
+                      return (
+                        <option key={uId} value={uId} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium">
+                          {isSel ? `✓ ${u.name}` : u.name}{isYou ? ' (You)' : ''}{desigName ? ` — (${desigName})` : ''}{isSel ? ' [Selected]' : ''}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="space-y-1">
@@ -2154,16 +2289,28 @@ const DetailModal = ({ task, currentUserId, onClose, onUpdate, getAuthHeaders, D
                     }}
                   >
                     <option value="">+ Assign / Remove Staff...</option>
-                    {users.map(u => {
-                      const uId = u.id || u._id;
-                      const isSel = (Array.isArray(editForm.assigned_to) ? editForm.assigned_to : [editForm.assigned_to]).some(id => String(id) === String(uId));
-                      const desigName = getUserDesignationName(u, designations, users);
-                      return (
-                        <option key={uId} value={uId} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium">
-                          {isSel ? `✓ ${u.name}` : u.name}{desigName ? ` — (${desigName})` : ''}{isSel ? ' [Selected]' : ''}
-                        </option>
-                      );
-                    })}
+                    {(() => {
+                      const groups = {};
+                      users.forEach(u => {
+                        const dept = u.department || (typeof u.departmentId === 'object' && u.departmentId?.name) || 'General Staff';
+                        if (!groups[dept]) groups[dept] = [];
+                        groups[dept].push(u);
+                      });
+                      return Object.entries(groups).map(([deptName, deptUsers]) => (
+                        <optgroup key={deptName} label={deptName.toUpperCase()} className="bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-400">
+                          {deptUsers.map(u => {
+                            const uId = u.id || u._id;
+                            const isSel = (Array.isArray(editForm.assigned_to) ? editForm.assigned_to : [editForm.assigned_to]).some(id => String(id) === String(uId));
+                            const desigName = getUserDesignationName(u, designations, users);
+                            return (
+                              <option key={uId} value={uId} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-medium">
+                                {isSel ? `✓ ${u.name}` : u.name}{desigName ? ` — (${desigName})` : ''}{isSel ? ' [Selected]' : ''}
+                              </option>
+                            );
+                          })}
+                        </optgroup>
+                      ));
+                    })()}
                   </select>
                 </div>
               ) : (
